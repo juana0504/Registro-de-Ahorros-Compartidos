@@ -76,9 +76,10 @@ function handleLogin() {
     // Aquí irían las llamadas al backend para autenticación
     // Por ahora es solo una demo
     console.log('Login con:', { email, password });
+    alert('¡Login exitoso! 🎉 (Esto es una demo. Conecta con tu backend para funcionalidad real)');
+    window.location.href = '/app/views/dashboard/inicio.html';
     
-    alert('¡Bienvenido de vuelta! 🎉\n\n(Esto es una demo. Conecta con tu backend para funcionalidad real)');
-    closeLoginModal();
+
 }
 
 // Manejar Registro
@@ -112,16 +113,16 @@ function handleRegister() {
     // Aquí irían las llamadas al backend para crear usuario
     // Por ahora es solo una demo
     console.log('Registro con:', { name, email, password });
-    
+
     alert('¡Cuenta creada exitosamente! 🎉\n\n(Esto es una demo. Conecta con tu backend para funcionalidad real)');
     closeRegisterModal();
 }
 
 // Cerrar modal al hacer clic fuera
-window.onclick = function(event) {
+window.onclick = function (event) {
     const loginModal = document.getElementById('loginModal');
     const registerModal = document.getElementById('registerModal');
-    
+
     if (event.target === loginModal) {
         closeLoginModal();
     }
@@ -131,13 +132,13 @@ window.onclick = function(event) {
 }
 
 // Manejar tecla Enter en los formularios
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Login form
     const loginInputs = ['loginEmail', 'loginPassword'];
     loginInputs.forEach(inputId => {
         const input = document.getElementById(inputId);
         if (input) {
-            input.addEventListener('keypress', function(e) {
+            input.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     handleLogin();
                 }
@@ -150,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
     registerInputs.forEach(inputId => {
         const input = document.getElementById(inputId);
         if (input) {
-            input.addEventListener('keypress', function(e) {
+            input.addEventListener('keypress', function (e) {
                 if (e.key === 'Enter') {
                     handleRegister();
                 }
