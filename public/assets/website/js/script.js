@@ -77,7 +77,7 @@ function handleLogin() {
     // Por ahora es solo una demo
     console.log('Login con:', { email, password });
     alert('¡Login exitoso! 🎉 (Esto es una demo. Conecta con tu backend para funcionalidad real)');
-    window.location.href = '/app/views/dashboard/inicio.html';
+    window.location.href = '/app/views/dashboard/inicio.php'; // Redirigir a la página de inicio del dashboard
     
 
 }
