@@ -23,4 +23,14 @@ switch ($request) {
         require BASE_PATH . '/app/views/website/index.php';
     break;
 
+
+    // Esto es la cosa de los enrutamientos, si no encuentra ninguna de las rutas anteriores
+    case '/inicio':
+        require BASE_PATH . '/app/views/dashboard/inicio.php';
+    break;
+
+    default:
+        // Página no encontrada
+        http_response_code(404);
+        echo "404 - Página no encontrada";
 }
