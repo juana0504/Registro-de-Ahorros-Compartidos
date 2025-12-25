@@ -22,23 +22,13 @@ switch ($request) {
     case '/':
         require BASE_PATH . '/app/views/website/index.php';
     break;
-
-
-    // Esto es la cosa de los enrutamientos, si no encuentra ninguna de las rutas anteriores
-    case '/inicio':
-        require BASE_PATH . '/app/views/dashboard/inicio.php';
+    case '/iniciar-sesion':
+        require BASE_PATH . '/app/controllers/login.php';
+    break;
+    
+    case '/dasboard':
+        require BASE_PATH . '/app/views/dasboard/inicio.php';
     break;
 
-    case '/billetera':
-        require BASE_PATH . '/app/views/dashboard/wallet.php';
-    break;
 
-    case '/transacciones':
-        require BASE_PATH . '/app/views/dashboard/transacciones.php';
-    break;
-
-    default:
-        // Página no encontrada
-        http_response_code(404);
-        echo "404 - Página no encontrada";
 }

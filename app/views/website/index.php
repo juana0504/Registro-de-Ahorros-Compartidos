@@ -20,7 +20,7 @@
                 </span>
             </div>
             <div class="flex gap-3">
-                <button href="login" onclick="showLoginModal()" class="px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
+                <button onclick="showLoginModal()" class="px-5 py-2 text-blue-600 font-medium hover:bg-blue-50 rounded-lg transition">
                     Iniciar Sesión
                 </button>
                 <button onclick="showRegisterModal()" class="px-5 py-2 bg-gradient-to-r from-blue-600 to-green-600 text-white font-medium rounded-lg hover:shadow-lg transition transform hover:scale-105">
@@ -126,7 +126,7 @@
 <!-- --------------ESTO ES EL LOGIN POR MEDIO DEL JS HACIENDO COMO ALERTA O ALGO ASI YO ME ENTIENDO-------------------- -->
     <!-- Login Modal -->
     <?php
-    include_once __DIR__ . '/../layouts/login.php'
+    include_once __DIR__ . '/../auth/login.php'
     ?>
 
 <!-- lo mismo qe lo de arriba pero esto es el de registrar   -->
