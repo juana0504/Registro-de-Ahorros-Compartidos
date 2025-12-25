@@ -40,29 +40,6 @@ document.querySelectorAll('.sidebar .nav-link').forEach(link => {
     });
 });
 
-// ============================================
-// NAVEGACIÓN
-// ============================================
-document.querySelectorAll('.sidebar .nav-link').forEach(item => {
-    item.addEventListener('click', function(e) {
-        if (this.getAttribute('data-page')) {
-            e.preventDefault();
-            
-            // Remover active de todos
-            document.querySelectorAll('.sidebar .nav-link').forEach(nav => {
-                nav.classList.remove('active');
-            });
-            
-            // Agregar active al clickeado
-            this.classList.add('active');
-            
-            console.log('Navegando a:', this.getAttribute('data-page'));
-            
-            // Aquí puedes agregar lógica para cambiar de vista
-            // Por ejemplo: cargar contenido dinámico, cambiar URL, etc.
-        }
-    });
-});
 
 // ============================================
 // GRÁFICO PRINCIPAL (BARRAS)
