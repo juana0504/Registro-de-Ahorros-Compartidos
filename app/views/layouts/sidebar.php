@@ -11,15 +11,15 @@
         <!-- NAVEGACIÓN -->
         <nav class="flex-grow-1 p-3">
             <div class="d-flex flex-column gap-1">
-                <a class="nav-link active" href="#" data-page="dashboard">
+                <a class="nav-link active" href="<?= BASE_URL ?>/inicio" data-page="dashboard">
                     <i class="bi bi-house-fill"></i>
                     <span>Dashboard</span>
                 </a>
-                <a class="nav-link" href="#" data-page="wallet">
+                <a class="nav-link" href="<?= BASE_URL ?>/billetera" data-page="wallet">
                     <i class="bi bi-wallet2"></i>
                     <span>Wallet</span>
                 </a>
-                <a class="nav-link" href="#" data-page="transactions">
+                <a class="nav-link" href="<?= BASE_URL ?>/transacciones" data-page="transactions">
                     <br>
                     <i class="bi bi-credit-card-fill"></i>
                     <span>Transacciones</span>

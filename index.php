@@ -29,6 +29,14 @@ switch ($request) {
         require BASE_PATH . '/app/views/dashboard/inicio.php';
     break;
 
+    case '/billetera':
+        require BASE_PATH . '/app/views/dashboard/wallet.php';
+    break;
+
+    case '/transacciones':
+        require BASE_PATH . '/app/views/dashboard/transacciones.php';
+    break;
+
     default:
         // Página no encontrada
         http_response_code(404);

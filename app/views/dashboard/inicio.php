@@ -16,7 +16,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <!-- MI CSS -->
-    <link rel="stylesheet" href="/public/assets/dashboard/css/dashboard.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/dashboard/css/dashboard.css">
 
 </head>
 
@@ -32,7 +32,7 @@
 
     <!-- SIDEBAR -->
     <?php
-    include_once __DIR__ . '/../../layouts/sidebar.php'
+    include_once __DIR__ . '/../layouts/sidebar.php'
     ?>
 
     <!-- MAIN CONTENT -->
@@ -384,7 +384,7 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/assets/dashboard/js/dashboard.js"></script>
+    <script src="<?= BASE_URL ?>/public/assets/dashboard/js/dashboard.js"></script>
 </body>
 
 </html>
