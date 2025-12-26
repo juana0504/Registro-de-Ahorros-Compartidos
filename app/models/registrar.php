@@ -1,7 +1,8 @@
 <?php
-require_once __DIR__ . '/../../../config/database.php';
+require_once __DIR__ . '/../../config/database.php';
 
-class Usuario{
+class Usuario
+{
     private $conexion; // Propiedad para almacenar la conexión a la base de datos
 
     // Constructor: se ejecuta automáticamente cuando se crea el objeto
@@ -21,8 +22,9 @@ class Usuario{
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function registrar($data){
-        try{
+    public function registrar($data)
+    {
+        try {
             $insert = "INSERT INTO usuario(
             nombre,
             email,
@@ -33,12 +35,12 @@ class Usuario{
             :clave)";
 
             $resultado = $this->conexion->prepare($insert);
-            $resultado->binParam(':nombre', $data['nombre']);
-            $resultado->binParam(':email', $data['email']);
-            $resultado->binParam(':clave', $data['clave']);
+            $resultado->bindParam(':nombre', $data['nombre']);
+            $resultado->bindParam(':email', $data['email']);
+            $resultado->bindParam(':clave', $data['clave']);
 
             return $resultado->execute();
-        }catch (PDOException $e) {
+        } catch (PDOException $e) {
             error_log("Error en usuario::registrar->" . $e->getMessage());
             return false;
         }

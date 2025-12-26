@@ -55,11 +55,18 @@ function registrarUsuario(){
     $nombre   =$_POST['nombre'] ?? '';
     $email    =$_POST['email'] ?? '';
     $clave    =$_POST['clave'] ?? '';
+    $confirm = $_POST['confirmar_contrasena'] ?? '';
 
     if (
-        empty($nombre) || empty($email) || empty($clave)
+        empty($nombre) || empty($email) || empty($clave) || empty($confirm)
     ) {
         mostrarSweetAlert('error', 'Campos vacíos', 'Por favor completa todos los campos');
+        exit();
+    }
+
+    // Validar que las contraseñas coincidan
+    if ($clave !== $confirm) {
+        mostrarSweetAlert('error', 'Error', 'Las contraseñas no coinciden');
         exit();
     }
 
@@ -81,7 +88,7 @@ function registrarUsuario(){
     $resultado = $objUsuario->registrar($data);
 
     if ($resultado === true) {
-        mostrarSweetAlert('success', 'Registro exitoso', 'Proveedor registrado.', '/aventura_go/login');
+        mostrarSweetAlert('success', 'Registro exitoso', 'Proveedor registrado.',  BASE_URL . '/' );
     }else{
         mostrarSweetAlert('error', 'Error al registrar', 'No se pudo registrar el proveedor.');
     }

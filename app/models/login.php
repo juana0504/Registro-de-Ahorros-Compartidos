@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/../../config/database.php';
 
-class Login{
+class Login {
 
     private $conexion;
 
@@ -12,21 +12,25 @@ class Login{
 
     public function autenticar($email, $clave){
 
-        try{
-            $insert = "SELECT * FROM usuario WHERE email = :email LIMIT 1";
-            $resultado = $this->conexion->prepare($insert);
-            $resultado->bindParam(':email', $email);
-            $resultado->execute();
-            $resultado->fetch(PDO::FETCH_ASSOC);
-        }catch (PDOException $e) {
-            //AQUÍ VA TU CATCH PARA CORREO DUPLICADO
-            if ($e->getCode() == 23000) {
-                mostrarSweetAlert('error', 'Correo duplicado', 'Este correo ya existe en el sistema.');
-                return false;
-            }
+        $sql = "SELECT id_usuario, nombre, clave 
+                FROM usuario 
+                WHERE email = :email 
+                LIMIT 1";
 
-            error_log("Error en usuario::registrar->" . $e->getMessage());
-            return false;
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+
+        $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if (!$usuario) {
+            return false; // usuario no existe
         }
+
+        if (!password_verify($clave, $usuario['clave'])) {
+            return false; // contraseña incorrecta
+        }
+
+        return $usuario; // login correcto
     }
 }
