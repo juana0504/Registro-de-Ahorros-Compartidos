@@ -1,4 +1,4 @@
-<form action="">
+<form action="inisciar-sesion" method="POST">
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <button onclick="closeLoginModal()" class="close-btn">
