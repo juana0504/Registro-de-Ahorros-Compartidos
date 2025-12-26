@@ -1,4 +1,4 @@
-<form action="inisciar-sesion" method="POST">
+<form action="<?= BASE_URL ?>/iniciar-sesion" method="POST">
     <div id="loginModal" class="modal">
         <div class="modal-content">
             <button onclick="closeLoginModal()" class="close-btn">
@@ -18,13 +18,13 @@
             <div class="space-y-5">
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                    <input type="email" id="loginEmail" class="input-field" placeholder="tu@email.com">
+                    <input type="email" name="email" id="loginEmail" class="input-field" placeholder="tu@email.com">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
                     <div class="relative">
-                        <input type="password" id="loginPassword" class="input-field" placeholder="••••••••">
+                        <input type="password" name="clave" id="loginPassword" class="input-field" placeholder="••••••••">
                         <button onclick="togglePassword('loginPassword')" class="password-toggle">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -34,14 +34,14 @@
                     </div>
                 </div>
 
-                <button onclick="handleLogin()" class="btn-primary">
+                <button type="submit" class="btn-primary">
                     Entrar
                 </button>
             </div>
 
             <p class="text-center text-sm text-gray-600 mt-6">
                 ¿No tienes cuenta?
-                <button type="submit" class="text-blue-600 font-medium hover:underline">
+                <button class="text-blue-600 font-medium hover:underline" >
                     Regístrate aquí
                 </button>
             </p>

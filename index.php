@@ -21,14 +21,20 @@ switch ($request) {
     // ===================================================================================================
     case '/':
         require BASE_PATH . '/app/views/website/index.php';
-    break;
+        break;
     case '/iniciar-sesion':
         require BASE_PATH . '/app/controllers/login.php';
-    break;
-    
-    case '/dasboard':
-        require BASE_PATH . '/app/views/dasboard/inicio.php';
-    break;
+        break;
+
+    case '/dashboard':
+        require BASE_PATH . '/app/views/dashboard/inicio.php';
+        break;
+    case '/billetera':
+        require BASE_PATH . '/app/views/dashboard/wallet.php';
+        break;
 
 
+    case '/guardar-usuario':
+        require BASE_PATH . '/app/controllers/registrar.php';  //redirige al guardar usuario
+        break;
 }

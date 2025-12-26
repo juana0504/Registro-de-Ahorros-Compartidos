@@ -132,7 +132,7 @@
 <!-- lo mismo qe lo de arriba pero esto es el de registrar   -->
     <!-- Register Modal -->
     <?php
-    include_once __DIR__ . '/../layouts/registro.php'
+    include_once __DIR__ . '/../auth/registro.php'
     ?>
     <script src="<?= BASE_URL ?>/public/assets/website/js/script.js"></script>
 </body>
