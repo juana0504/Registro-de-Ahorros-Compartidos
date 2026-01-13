@@ -19,8 +19,8 @@ require_once __DIR__ . '/../../helpers/sesion.php';
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <!-- CSS -->
-    <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/sidebar.css"> -->
-    <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/header.css"> -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/sidebar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/header.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/dashboard/css/dashboard.css">
 </head>
 
@@ -380,8 +380,7 @@ require_once __DIR__ . '/../../helpers/sesion.php';
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= BASE_URL ?>/public/assets/layouts/js/sidebar.js"></script>
-    <script src="<?= BASE_URL ?>/public/assets/layouts/js/header.js"></script>
+
     <script src="<?= BASE_URL ?>/public/assets/dashboard/js/dashboard.js"></script>
 </body>
 
