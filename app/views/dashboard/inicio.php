@@ -16,8 +16,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
     <!-- CSS -->
-    <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/sidebar.css"> -->
-    <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/header.css"> -->
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/sidebar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/header.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/dashboard/css/dashboard.css">
 </head>
 

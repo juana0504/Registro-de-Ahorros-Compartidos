@@ -5,12 +5,12 @@
 /* Variables CSS */
 :root {
     --header-height: 70px;
-    --header-bg: #1a1d29;
+    --header-bg: #1a1a2e;
     --header-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
     --header-text: #ffffff;
     --header-text-muted: #ffffff;
     --header-border: #e5e7eb;
-    --search-bg: #1a1d29;
+    --search-bg: #1a1a2e;
     --search-focus-bg: #ffffff;
     --search-border: #e5e7eb;
     --search-focus-border: #6366f1;

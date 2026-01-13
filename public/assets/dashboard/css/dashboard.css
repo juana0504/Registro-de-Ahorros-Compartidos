@@ -13,9 +13,9 @@
     --info-color: #3b82f6;
     
     /* Backgrounds */
-    --bg-primary: #0f172a;
+    --bg-primary: #0f0f23;
     --bg-secondary: #1e293b;
-    --bg-card: #1e293b;
+    --bg-card: #1a1a2e;
     --bg-hover: #334155;
     
     /* Texto */
@@ -64,21 +64,24 @@ body {
 
 .main-content {
     min-height: 100vh;
-    margin-left: var(--sidebar-width);
-    margin-top: var(--header-height);
     padding: 2rem;
-    transition: margin-left var(--transition-speed) ease;
+    transition: padding-left var(--transition-speed) ease, margin-top var(--transition-speed) ease;
     background: var(--bg-primary);
-    /* width: calc(100% - var(--sidebar-width)); */
+    margin-top: var(--header-height, 70px);
 }
 
-/* Ajuste con sidebar colapsado */
+/* Ajuste cuando el body tiene padding-left del sidebar */
+body:not(.sidebar-collapsed) .main-content {
+    /* El padding-left ya lo maneja el body desde el sidebar.css */
+}
 
+body.sidebar-collapsed .main-content {
+    /* El padding-left ya lo maneja el body desde el sidebar.css */
+}
 
 /* Responsive */
 @media (max-width: 768px) {
     .main-content {
-        margin-left: 0 !important;
         padding: 1rem;
         margin-top: 60px;
     }
@@ -711,10 +714,6 @@ a:hover {
 }
 
 .gap-4 {
-    gap: 1.5rem !important;
-}
-
-.g-4 {
     gap: 1.5rem !important;
 }
 
