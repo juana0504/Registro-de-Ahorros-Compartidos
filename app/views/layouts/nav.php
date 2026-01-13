@@ -81,11 +81,6 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a href="#" class="dropdown-item">
-                        <i class="bi bi-moon-stars-fill"></i>
-                        <span>Modo Oscuro</span>
-                    </a>
-
                     <a href="<?= BASE_URL ?>/ayuda" class="dropdown-item" data-action="help">
                         <i class="bi bi-question-circle-fill"></i>
                         <span>Centro de Ayuda</span>
