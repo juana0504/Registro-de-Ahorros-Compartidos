@@ -1,4 +1,6 @@
-// Funciones para mostrar/ocultar modales
+/* =========================
+   MODALES
+========================= */
 function showLoginModal() {
     document.getElementById('loginModal').classList.add('active');
 }
@@ -17,7 +19,6 @@ function closeRegisterModal() {
     clearRegisterForm();
 }
 
-// Alternar entre login y registro
 function switchToRegister() {
     closeLoginModal();
     showRegisterModal();
@@ -28,17 +29,17 @@ function switchToLogin() {
     showLoginModal();
 }
 
-// Toggle para mostrar/ocultar contraseña
+/* =========================
+   TOGGLE PASSWORD
+========================= */
 function togglePassword(inputId) {
     const input = document.getElementById(inputId);
-    if (input.type === 'password') {
-        input.type = 'text';
-    } else {
-        input.type = 'password';
-    }
+    input.type = input.type === 'password' ? 'text' : 'password';
 }
 
-// Limpiar formularios
+/* =========================
+   LIMPIAR FORMULARIOS
+========================= */
 function clearLoginForm() {
     document.getElementById('loginEmail').value = '';
     document.getElementById('loginPassword').value = '';
@@ -51,125 +52,125 @@ function clearRegisterForm() {
     document.getElementById('registerConfirmPassword').value = '';
 }
 
-// Validación de email
+/* =========================
+   VALIDACIONES
+========================= */
 function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
 }
 
-// Manejar Login
+/* =========================
+   LOGIN
+========================= */
 function handleLogin() {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
 
-    // Validaciones
     if (!email || !password) {
         alert('Por favor completa todos los campos');
         return;
     }
 
     if (!isValidEmail(email)) {
-        alert('Por favor ingresa un email válido');
+        alert('Ingresa un email válido');
         return;
     }
 
-    // Aquí irían las llamadas al backend para autenticación
-    // Por ahora es solo una demo
-    console.log('Login con:', { email, password });
-    alert('¡Login exitoso! 🎉 (Esto es una demo. Conecta con tu backend para funcionalidad real)');
-    window.location.href = '/registro_gastos/app/views/dashboard/inicio.php'; // Redirigir a la página de inicio del dashboard
-    
-
+    // ✅ Cuando conectes con PHP, descomenta:
+    // document.getElementById('loginForm').submit();
 }
 
-// Manejar Registro
+/* =========================
+   REGISTRO
+========================= */
 function handleRegister() {
     const name = document.getElementById('registerName').value.trim();
     const email = document.getElementById('registerEmail').value.trim();
     const password = document.getElementById('registerPassword').value;
-    const confirmPassword = document.getElementById('registerConfirmPassword').value;
+    const confirm = document.getElementById('registerConfirmPassword').value;
 
-    // Validaciones
-    if (!name || !email || !password || !confirmPassword) {
-        alert('Por favor completa todos los campos');
+    if (!name || !email || !password || !confirm) {
+        alert('Completa todos los campos');
         return;
     }
 
     if (!isValidEmail(email)) {
-        alert('Por favor ingresa un email válido');
+        alert('Email inválido');
         return;
     }
 
     if (password.length < 6) {
-        alert('La contraseña debe tener al menos 6 caracteres');
+        alert('La contraseña debe tener mínimo 6 caracteres');
         return;
     }
 
-    if (password !== confirmPassword) {
+    if (password !== confirm) {
         alert('Las contraseñas no coinciden');
         return;
     }
 
-    // Aquí irían las llamadas al backend para crear usuario
-    // Por ahora es solo una demo
-    console.log('Registro con:', { name, email, password });
-
-    alert('¡Cuenta creada exitosamente! 🎉\n\n(Esto es una demo. Conecta con tu backend para funcionalidad real)');
+    alert('Registro exitoso (demo)');
     closeRegisterModal();
 }
 
-// Cerrar modal al hacer clic fuera
-window.onclick = function (event) {
-    const loginModal = document.getElementById('loginModal');
-    const registerModal = document.getElementById('registerModal');
+/* =========================
+   EVENTOS
+========================= */
+document.addEventListener('DOMContentLoaded', () => {
 
-    if (event.target === loginModal) {
-        closeLoginModal();
+    /* SUBMIT LOGIN */
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', e => {
+            e.preventDefault();
+            handleLogin();
+        });
     }
-    if (event.target === registerModal) {
-        closeRegisterModal();
-    }
-}
 
-// Manejar tecla Enter en los formularios
-document.addEventListener('DOMContentLoaded', function () {
-    // Login form
-    const loginInputs = ['loginEmail', 'loginPassword'];
-    loginInputs.forEach(inputId => {
-        const input = document.getElementById(inputId);
+    /* ENTER LOGIN */
+    ['loginEmail', 'loginPassword'].forEach(id => {
+        const input = document.getElementById(id);
         if (input) {
-            input.addEventListener('keypress', function (e) {
+            input.addEventListener('keydown', e => {
                 if (e.key === 'Enter') {
+                    e.preventDefault();
                     handleLogin();
                 }
             });
         }
     });
 
-    // Register form
-    const registerInputs = ['registerName', 'registerEmail', 'registerPassword', 'registerConfirmPassword'];
-    registerInputs.forEach(inputId => {
-        const input = document.getElementById(inputId);
+    /* ENTER REGISTER */
+    ['registerName', 'registerEmail', 'registerPassword', 'registerConfirmPassword'].forEach(id => {
+        const input = document.getElementById(id);
         if (input) {
-            input.addEventListener('keypress', function (e) {
+            input.addEventListener('keydown', e => {
                 if (e.key === 'Enter') {
+                    e.preventDefault();
                     handleRegister();
                 }
             });
         }
     });
+
 });
 
-// Animación de scroll suave para los botones CTA
+/* =========================
+   CERRAR MODAL AL CLICK FUERA
+========================= */
+window.onclick = e => {
+    if (e.target === document.getElementById('loginModal')) closeLoginModal();
+    if (e.target === document.getElementById('registerModal')) closeRegisterModal();
+};
+
+/* =========================
+   SCROLL SUAVE
+========================= */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+    anchor.addEventListener('click', e => {
         e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
+        const target = document.querySelector(anchor.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
     });
 });

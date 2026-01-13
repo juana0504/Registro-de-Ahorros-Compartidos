@@ -32,7 +32,9 @@ switch ($request) {
     case '/billetera':
         require BASE_PATH . '/app/views/dashboard/wallet.php';
         break;
-
+    case '/transaciones':
+        require BASE_PATH . '/app/views/dashboard/transaciones.php';
+        break;
 
     case '/guardar-usuario':
         require BASE_PATH . '/app/controllers/registrar.php';  //redirige al guardar usuario
