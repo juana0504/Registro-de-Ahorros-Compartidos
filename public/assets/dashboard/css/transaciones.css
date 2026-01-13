@@ -1,0 +1,253 @@
+/* ============================================
+   ESTILOS ADICIONALES PARA TRANSACCIONES
+   Agregar al archivo styles.css existente
+   ============================================ */
+
+/* Stats Cards */
+.stats-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    border-color: rgba(129, 140, 248, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.stats-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.stats-info {
+    flex: 1;
+}
+
+/* Tabla de Transacciones */
+.transactions-table {
+    color: var(--text-primary);
+}
+
+.transactions-table thead {
+    background: rgba(129, 140, 248, 0.05);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.transactions-table thead th {
+    padding: 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+}
+
+.transactions-table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transaction-row {
+    transition: all 0.3s ease;
+}
+
+.transaction-row:hover {
+    background: rgba(129, 140, 248, 0.05);
+}
+
+.date-separator {
+    background: rgba(129, 140, 248, 0.03);
+}
+
+.date-separator td {
+    border-top: 2px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+/* Badges personalizados */
+.badge {
+    padding: 0.375rem 0.75rem;
+    font-weight: 500;
+    font-size: 0.75rem;
+    border-radius: 0.5rem;
+}
+
+.bg-purple {
+    background: #9333ea !important;
+}
+
+.text-purple {
+    color: #9333ea !important;
+}
+
+.bg-purple.bg-opacity-10 {
+    background: rgba(147, 51, 234, 0.1) !important;
+}
+
+.bg-purple.bg-opacity-20 {
+    background: rgba(147, 51, 234, 0.2) !important;
+}
+
+/* Formularios */
+.form-control,
+.form-select {
+    background: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background: var(--bg-dark);
+    border-color: var(--accent-purple);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 0.2rem rgba(129, 140, 248, 0.25);
+}
+
+.form-control::placeholder {
+    color: var(--text-secondary);
+}
+
+.input-group-text {
+    background: var(--bg-dark);
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+.form-label {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Checkboxes */
+.form-check-input {
+    background-color: var(--bg-dark);
+    border-color: var(--border-color);
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--accent-purple);
+    border-color: var(--accent-purple);
+}
+
+.form-check-input:focus {
+    border-color: var(--accent-purple);
+    box-shadow: 0 0 0 0.2rem rgba(129, 140, 248, 0.25);
+}
+
+/* Botones de periodo */
+.btn-group .btn-outline-light.active {
+    background: var(--accent-purple);
+    border-color: var(--accent-purple);
+    color: white;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-item {
+    color: var(--text-primary);
+    padding: 0.5rem 1rem;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background: rgba(129, 140, 248, 0.1);
+    color: var(--text-primary);
+}
+
+.dropdown-item.text-danger:hover {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.dropdown-divider {
+    border-color: var(--border-color);
+}
+
+/* Paginación */
+.pagination {
+    --bs-pagination-bg: var(--bg-card);
+    --bs-pagination-border-color: var(--border-color);
+    --bs-pagination-color: var(--text-primary);
+    --bs-pagination-hover-bg: rgba(129, 140, 248, 0.1);
+    --bs-pagination-hover-border-color: var(--accent-purple);
+    --bs-pagination-focus-bg: rgba(129, 140, 248, 0.1);
+    --bs-pagination-active-bg: var(--accent-purple);
+    --bs-pagination-active-border-color: var(--accent-purple);
+    --bs-pagination-disabled-bg: var(--bg-card);
+    --bs-pagination-disabled-color: var(--text-secondary);
+}
+
+.page-link {
+    border-radius: 0.5rem;
+    margin: 0 0.125rem;
+}
+
+/* Responsive para tabla */
+@media (max-width: 768px) {
+    .transactions-table {
+        font-size: 0.875rem;
+    }
+    
+    .transactions-table thead th,
+    .transactions-table tbody td {
+        padding: 0.75rem 0.5rem;
+    }
+    
+    .transaction-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    
+    .stats-card {
+        padding: 1rem;
+    }
+    
+    .stats-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Ocultar columnas menos importantes en móvil */
+    .transactions-table thead th:nth-child(3),
+    .transactions-table tbody td:nth-child(3) {
+        display: none;
+    }
+}

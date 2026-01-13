@@ -32,7 +32,7 @@
 
     <!-- SIDEBAR -->
     <?php
-    include_once __DIR__ . '/../layouts/sidebar.php'
+    include_once __DIR__ . '/../layouts/sidebar.php';
     ?>
 
     <!-- MAIN CONTENT -->
@@ -125,94 +125,9 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- MAIN CHART -->
-                <div class="col-12 col-xl-6">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Ingresos vs Gastos</h6>
-                                <div class="d-flex gap-3">
-                                    <span class="d-flex align-items-center gap-1">
-                                        <span class="badge"
-                                            style="background: #818cf8; width: 12px; height: 12px; padding: 0;"></span>
-                                        <small class="text-muted">Ingresos</small>
-                                    </span>
-                                    <span class="d-flex align-items-center gap-1">
-                                        <span class="badge"
-                                            style="background: #f472b6; width: 12px; height: 12px; padding: 0;"></span>
-                                        <small class="text-muted">Gastos</small>
-                                    </span>
-                                </div>
-                            </div>
-                            <div style="height: 300px;">
-                                <canvas id="mainChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CATEGORÍAS -->
-                <div class="col-12 col-lg-6 col-xl-3">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Categorías</h6>
-                                <a href="#" class="text-decoration-none small text-muted">Ver todo</a>
-                            </div>
-                            <div class="d-flex justify-content-center mb-3">
-                                <div style="max-width: 200px;">
-                                    <canvas id="pieChart"></canvas>
-                                </div>
-                            </div>
-                            <div class="d-flex flex-column gap-2">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #818cf8; width: 8px; height: 8px; padding: 0;"></span>
-                                        <small>Comida</small>
-                                    </span>
-                                    <small class="text-muted">35%</small>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #f472b6; width: 8px; height: 8px; padding: 0;"></span>
-                                        <small>Transporte</small>
-                                    </span>
-                                    <small class="text-muted">20%</small>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #fbbf24; width: 8px; height: 8px; padding: 0;"></span>
-                                        <small>Entretenimiento</small>
-                                    </span>
-                                    <small class="text-muted">15%</small>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #34d399; width: 8px; height: 8px; padding: 0;"></span>
-                                        <small>Servicios</small>
-                                    </span>
-                                    <small class="text-muted">18%</small>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #60a5fa; width: 8px; height: 8px; padding: 0;"></span>
-                                        <small>Otros</small>
-                                    </span>
-                                    <small class="text-muted">12%</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                
                 <!-- TRANSACCIONES -->
-                <div class="col-12 col-lg-6 col-xl-3">
+                <div class="col-12 col-lg-6 col-xl-9">
                     <div class="card h-100">
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center mb-3">
@@ -275,6 +190,65 @@
                                             <small class="text-muted">Hace 3 días</small>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CATEGORÍAS -->
+                <div class="col-12 col-lg-6 col-xl-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Categorías</h6>
+                                <a href="#" class="text-decoration-none small text-muted">Ver todo</a>
+                            </div>
+                            <div class="d-flex justify-content-center mb-3">
+                                <div style="max-width: 200px;">
+                                    <canvas id="pieChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="badge"
+                                            style="background: #818cf8; width: 8px; height: 8px; padding: 0;"></span>
+                                        <small>Comida</small>
+                                    </span>
+                                    <small class="text-muted">35%</small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="badge"
+                                            style="background: #f472b6; width: 8px; height: 8px; padding: 0;"></span>
+                                        <small>Transporte</small>
+                                    </span>
+                                    <small class="text-muted">20%</small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="badge"
+                                            style="background: #fbbf24; width: 8px; height: 8px; padding: 0;"></span>
+                                        <small>Entretenimiento</small>
+                                    </span>
+                                    <small class="text-muted">15%</small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="badge"
+                                            style="background: #34d399; width: 8px; height: 8px; padding: 0;"></span>
+                                        <small>Servicios</small>
+                                    </span>
+                                    <small class="text-muted">18%</small>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="badge"
+                                            style="background: #60a5fa; width: 8px; height: 8px; padding: 0;"></span>
+                                        <small>Otros</small>
+                                    </span>
+                                    <small class="text-muted">12%</small>
                                 </div>
                             </div>
                         </div>
