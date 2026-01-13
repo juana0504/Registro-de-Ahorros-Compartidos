@@ -48,7 +48,7 @@ body {
    MAIN CONTENT
    ============================================ */
 .main-content {
-    margin-left: var(--sidebar-width);
+    /* margin-left: var(--sidebar-width); */
     min-height: 100vh;
     background: var(--bg-dark);
 }
@@ -292,7 +292,7 @@ body {
 .mobile-menu-btn {
     display: none;
     position: fixed;
-    top: 15px;
+    top: 5px;
     left: 15px;
     z-index: 1050;
     background: var(--bg-card);
@@ -377,9 +377,9 @@ body {
         margin-left: 0;
     }
 
-    .mobile-menu-btn {
+    /* .mobile-menu-btn {
         display: block;
-    }
+    } */
 
     .search-input {
         width: 100%;

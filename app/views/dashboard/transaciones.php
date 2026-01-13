@@ -102,12 +102,7 @@ require_once __DIR__ . '/../../helpers/sesion.php';
     <!-- MAIN -->
     <main class="main-content">
 
-        <nav class="navbar px-4 border-bottom">
-            <div>
-                <h5 class="mb-0">Transacciones 📊</h5>
-                <small class="text-secondary">Historial financiero</small>
-            </div>
-        </nav>
+    <?php include_once __DIR__ . '/../layouts/nav.php'; ?>
 
         <div class="container-fluid p-4">
 
