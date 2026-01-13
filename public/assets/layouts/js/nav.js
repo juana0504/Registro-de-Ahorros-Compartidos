@@ -363,28 +363,28 @@ class HeaderController {
     /**
      * Actualiza los datos del usuario en el UI
      */
-    updateUserData(data) {
-        // Actualizar nombre en el saludo
-        const greetingName = document.querySelector('.greeting-name');
-        if (greetingName) {
-            const nameText = greetingName.querySelector('span') || greetingName;
-            nameText.textContent = data.name;
-        }
+    // updateUserData(data) {
+    //     // Actualizar nombre en el saludo
+    //     const greetingName = document.querySelector('.greeting-name');
+    //     if (greetingName) {
+    //         const nameText = greetingName.querySelector('span') || greetingName;
+    //         nameText.textContent = data.name;
+    //     }
 
-        // Actualizar email en dropdown
-        const dropdownEmail = document.querySelector('.dropdown-user-email');
-        if (dropdownEmail) {
-            dropdownEmail.textContent = data.email;
-        }
+    //     // Actualizar email en dropdown
+    //     const dropdownEmail = document.querySelector('.dropdown-user-email');
+    //     if (dropdownEmail) {
+    //         dropdownEmail.textContent = data.email;
+    //     }
 
-        // Actualizar nombre en dropdown
-        const dropdownName = document.querySelector('.dropdown-user-name');
-        if (dropdownName) {
-            dropdownName.textContent = data.name;
-        }
+    //     // Actualizar nombre en dropdown
+    //     const dropdownName = document.querySelector('.dropdown-user-name');
+    //     if (dropdownName) {
+    //         dropdownName.textContent = data.name;
+    //     }
 
-        console.log('✅ Datos de usuario actualizados');
-    }
+    //     console.log('✅ Datos de usuario actualizados');
+    // }
 
     /**
      * Setup del efecto de scroll en el header

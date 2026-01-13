@@ -1,3 +1,14 @@
+<?php
+
+require_once __DIR__ . '/../../helpers/sesion.php';
+require_once __DIR__ . '/../../controllers/perfil.php';
+
+$id = $_SESSION['user']['id'];
+
+$usuario = mostrarUsuario($id);
+
+?>
+
 <!-- HEADER -->
 <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/nav.css">
 
@@ -13,7 +24,7 @@
         <div class="navbar-greeting">
             <p class="greeting-text">Buenos días</p>
             <h5 class="greeting-name">
-                <span>Usuario</span>
+                <span><?= $usuario['nombre'] ?></span>
                 <span class="greeting-wave">👋</span>
             </h5>
         </div>
@@ -59,8 +70,8 @@
                 <div class="user-dropdown">
                     <!-- Header del dropdown -->
                     <div class="dropdown-header">
-                        <div class="dropdown-user-name">Usuario</div>
-                        <div class="dropdown-user-email">usuario@ejemplo.com</div>
+                        <div class="dropdown-user-name"><?= $usuario['nombre'] ?></div>
+                        <div class="dropdown-user-email"><?= $usuario['email'] ?></div>
                     </div>
 
                     <!-- Items del dropdown -->
@@ -88,7 +99,7 @@
 
                     <div class="dropdown-divider"></div>
 
-                    <a href="<?= BASE_URL ?>/logout" class="dropdown-item logout" data-action="logout">
+                    <a href="<?= BASE_URL ?>/cerrar-sesion" class="dropdown-item logout" >
                         <i class="bi bi-box-arrow-right"></i>
                         <span>Cerrar Sesión</span>
                     </a>
