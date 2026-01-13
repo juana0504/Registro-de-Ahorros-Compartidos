@@ -12,80 +12,12 @@ require_once __DIR__ . '/../../helpers/sesion.php';
     <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/dashboard/css/transaciones.css">
+
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-    <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-card: #1e293b;
-            --border-color: rgba(148, 163, 184, .1);
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --accent: #818cf8;
-        }
-
-        body {
-            background: var(--bg-primary);
-            color: var(--text-primary)
-        }
-
-        .sidebar {
-            width: 260px;
-            position: fixed;
-            height: 100vh;
-            background: var(--bg-secondary);
-            left: 0;
-            top: 0
-        }
-
-        .main-content {
-            margin-left: 260px
-        }
-
-        .mobile-menu-btn {
-            display: none
-        }
-
-        @media(max-width:768px) {
-            .sidebar {
-                transform: translateX(-100%);
-                transition: .3s
-            }
-
-            .sidebar.active {
-                transform: translateX(0)
-            }
-
-            .main-content {
-                margin-left: 0
-            }
-
-            .mobile-menu-btn {
-                display: block;
-                position: fixed;
-                top: 1rem;
-                left: 1rem;
-                z-index: 999
-            }
-        }
-
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 1rem
-        }
-
-        .transaction-row {
-            transition: .2s
-        }
-
-        .transaction-row:hover {
-            background: rgba(129, 140, 248, .08)
-        }
-    </style>
 </head>
 
 <body>
@@ -97,144 +29,219 @@ require_once __DIR__ . '/../../helpers/sesion.php';
     <!-- SIDEBAR -->
     <?php
     include_once __DIR__ . '/../layouts/sidebar.php';
-    ?>  
+    ?>
 
     <!-- MAIN -->
     <main class="main-content">
 
-    <?php include_once __DIR__ . '/../layouts/nav.php'; ?>
+        <?php include_once __DIR__ . '/../layouts/nav.php'; ?>
 
-        <div class="container-fluid p-4">
-
-            <!-- STATS -->
-            <div class="row g-3 mb-4">
-                <div class="col-md-3">
-                    <div class="card p-3">Ingresos <h4 class="text-success">$5,000</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card p-3">Gastos <h4 class="text-danger">$2,800</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card p-3">Transacciones <h4>18</h4>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card p-3">Promedio <h4>$155</h4>
-                    </div>
-                </div>
+        <!-- HEADER -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="mb-1">Transacciones</h2>
+                <p class="text-secondary mb-0">Gestiona tus ingresos y gastos</p>
             </div>
-
-            <!-- CHART -->
-            <div class="card mb-4 p-3">
-                <h6 class="mb-3">Ingresos vs Gastos</h6>
-                <canvas id="chart" height="120"></canvas>
-            </div>
-
-            <!-- FILTER -->
-            <div class="card mb-3 p-3">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <input class="form-control" placeholder="Buscar..." id="search">
-                    </div>
-                    <div class="col-md-2">
-                        <select class="form-select" id="typeFilter">
-                            <option value="all">Todos</option>
-                            <option value="income">Ingreso</option>
-                            <option value="expense">Gasto</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TABLE -->
-            <div class="card">
-                <div class="table-responsive">
-                    <table class="table table-dark table-hover mb-0">
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox" id="selectAll"></th>
-                                <th>Concepto</th>
-                                <th>Tipo</th>
-                                <th>Monto</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <tr class="transaction-row" data-type="income">
-                                <td><input type="checkbox"></td>
-                                <td>Salario</td>
-                                <td class="text-success">Ingreso</td>
-                                <td class="text-success">+5000</td>
-                            </tr>
-                            <tr class="transaction-row" data-type="expense">
-                                <td><input type="checkbox"></td>
-                                <td>Supermercado</td>
-                                <td class="text-danger">Gasto</td>
-                                <td class="text-danger">-800</td>
-                            </tr>
-                            <tr class="transaction-row" data-type="expense">
-                                <td><input type="checkbox"></td>
-                                <td>Netflix</td>
-                                <td class="text-danger">Gasto</td>
-                                <td class="text-danger">-50</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+            <button class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#addModal">
+                <i class="bi bi-plus-lg me-2"></i>Nueva Transacción
+            </button>
         </div>
+
+        <!-- STATS -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                            <i class="bi bi-arrow-up"></i>
+                        </div>
+                        <span class="badge bg-success bg-opacity-10 text-success">+12%</span>
+                    </div>
+                    <p class="text-secondary mb-1">Total Ingresos</p>
+                    <h3 class="mb-0">$<span id="totalIncome">5,000</span></h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon" style="background: rgba(239, 68, 68, 0.1); color: var(--danger);">
+                            <i class="bi bi-arrow-down"></i>
+                        </div>
+                        <span class="badge bg-danger bg-opacity-10 text-danger">-8%</span>
+                    </div>
+                    <p class="text-secondary mb-1">Total Gastos</p>
+                    <h3 class="mb-0">$<span id="totalExpense">2,800</span></h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: var(--accent);">
+                            <i class="bi bi-wallet2"></i>
+                        </div>
+                    </div>
+                    <p class="text-secondary mb-1">Balance</p>
+                    <h3 class="mb-0">$<span id="balance">2,200</span></h3>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);">
+                            <i class="bi bi-graph-up"></i>
+                        </div>
+                    </div>
+                    <p class="text-secondary mb-1">Transacciones</p>
+                    <h3 class="mb-0"><span id="totalTransactions">18</span></h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHART -->
+        <div class="card-custom mb-4">
+            <h5 class="mb-3">Flujo de Efectivo</h5>
+            <canvas id="chart" height="80"></canvas>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="card-custom mb-3">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input class="form-control border-start-0" placeholder="Buscar transacción..." id="search">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" id="typeFilter">
+                        <option value="all">Todos los tipos</option>
+                        <option value="income">Ingresos</option>
+                        <option value="expense">Gastos</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select class="form-select" id="dateFilter">
+                        <option value="all">Todo el tiempo</option>
+                        <option value="today">Hoy</option>
+                        <option value="week">Esta semana</option>
+                        <option value="month">Este mes</option>
+                    </select>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn action-btn me-2" id="deleteSelected">
+                        <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                    <button class="btn action-btn">
+                        <i class="bi bi-download"></i> Exportar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="card-custom">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th width="50">
+                                <input type="checkbox" class="form-check-input" id="selectAll">
+                            </th>
+                            <th>Concepto</th>
+                            <th>Categoría</th>
+                            <th>Fecha y Hora</th>
+                            <th>Tipo</th>
+                            <th class="text-end">Monto</th>
+                            <th class="text-end" width="100">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Datos dinámicos desde JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary">
+                <div class="text-secondary">
+                    Mostrando <span id="showingCount">1-10</span> de <span id="totalCount">18</span>
+                </div>
+                <nav>
+                    <ul class="pagination pagination-custom mb-0" id="pagination">
+                        <!-- Paginación dinámica -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
     </main>
+
+    <!-- MODAL ADD/EDIT -->
+    <div class="modal fade" id="addModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-bottom border-secondary">
+                    <h5 class="modal-title">Nueva Transacción</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="transactionForm">
+                        <div class="mb-3">
+                            <label class="form-label">Concepto</label>
+                            <input type="text" class="form-control" id="concept" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tipo</label>
+                            <select class="form-select" id="type" required>
+                                <option value="income">Ingreso</option>
+                                <option value="expense">Gasto</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Categoría</label>
+                            <select class="form-select" id="category" required>
+                                <option value="Salario">Salario</option>
+                                <option value="Freelance">Freelance</option>
+                                <option value="Alimentación">Alimentación</option>
+                                <option value="Transporte">Transporte</option>
+                                <option value="Entretenimiento">Entretenimiento</option>
+                                <option value="Servicios">Servicios</option>
+                                <option value="Salud">Salud</option>
+                                <option value="Educación">Educación</option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Monto</label>
+                            <input type="number" class="form-control" id="amount" step="0.01" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Hora</label>
+                            <input type="time" class="form-control" id="time" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notas (opcional)</label>
+                            <textarea class="form-control" id="notes" rows="2"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary-custom flex-fill">Guardar</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // SIDEBAR
-        const menuBtn = document.getElementById("menuBtn");
-        const sidebar = document.getElementById("sidebar");
-        menuBtn.onclick = () => sidebar.classList.toggle("active");
-
-        // CHART
-        new Chart(document.getElementById("chart"), {
-            type: "line",
-            data: {
-                labels: ["Lun", "Mar", "Mié", "Jue", "Vie"],
-                datasets: [{
-                        label: "Ingresos",
-                        data: [500, 800, 1200, 900, 1600],
-                        borderColor: "#22c55e"
-                    },
-                    {
-                        label: "Gastos",
-                        data: [200, 600, 300, 700, 500],
-                        borderColor: "#ef4444"
-                    }
-                ]
-            }
-        });
-
-        // FILTER
-        const search = document.getElementById("search");
-        const typeFilter = document.getElementById("typeFilter");
-        const rows = document.querySelectorAll(".transaction-row");
-
-        function filter() {
-            rows.forEach(r => {
-                const matchText = r.innerText.toLowerCase().includes(search.value.toLowerCase());
-                const matchType = typeFilter.value === "all" || r.dataset.type === typeFilter.value;
-                r.style.display = matchText && matchType ? "" : "none";
-            });
-        }
-
-        search.oninput = filter;
-        typeFilter.onchange = filter;
-
-        // SELECT ALL
-        document.getElementById("selectAll").addEventListener("change", e => {
-            document.querySelectorAll("tbody input[type=checkbox]").forEach(c => c.checked = e.target.checked);
-        });
-    </script>
+    <script src="<?= BASE_URL ?>/public/assets/dashboard/js/transaciones.js"></script>
 
 </body>
 
