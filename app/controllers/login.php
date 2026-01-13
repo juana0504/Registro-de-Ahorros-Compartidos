@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $_SESSION['user'] = [
         'id'     => $resultado['id_usuario'],
         'nombre' => $resultado['nombre'],
-        'email'  => $resultado['email']
     ];
 
 
