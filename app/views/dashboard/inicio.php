@@ -38,21 +38,9 @@
     <!-- MAIN CONTENT -->
     <main class="main-content">
 
-        <!-- HEADER -->
-        <nav class="navbar navbar-top px-4">
-            <div class="container-fluid">
-                <h5 class="mb-0 text-white">Hola, Yair </h5>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="position-relative d-none d-md-block">
-                        <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
-                        <input type="search" class="search-input ps-5" placeholder="Buscar..."
-                            aria-label="Buscar en el dashboard">
-                    </div>
-                    <img src="https://i.pravatar.cc/40?img=47" class="user-avatar" alt="Avatar de usuario" role="button"
-                        tabindex="0">
-                </div>
-            </div>
-        </nav>
+        <?php
+        include_once __DIR__ . '/../layouts/nav.php';
+        ?>
 
         <!-- CONTENT -->
         <div class="container-fluid p-4">
@@ -125,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- TRANSACCIONES -->
                 <div class="col-12 col-lg-6 col-xl-9">
                     <div class="card h-100">
