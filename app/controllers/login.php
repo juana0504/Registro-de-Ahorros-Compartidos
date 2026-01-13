@@ -22,9 +22,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     session_start();
     $_SESSION['user'] = [
-        'email' => $resultado['id_usuario'],
-        'clave' => $resultado['nombre'],
+        'id'     => $resultado['id_usuario'],
+        'nombre' => $resultado['nombre'],
+        'email'  => $resultado['email']
     ];
+
 
     mostrarSweetAlert(
         'success',
@@ -34,8 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     );
 
     exit();
-
-}else{
+} else {
     http_response_code(405);
     echo "Metodo no permitido";
     exit();

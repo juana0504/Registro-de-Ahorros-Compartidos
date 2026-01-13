@@ -13,9 +13,9 @@ class Login {
     public function autenticar($email, $clave){
 
         $sql = "SELECT id_usuario, nombre, clave 
-                FROM usuario 
-                WHERE email = :email 
-                LIMIT 1";
+            FROM usuario 
+            WHERE email = :email 
+        LIMIT 1";
 
         $stmt = $this->conexion->prepare($sql);
         $stmt->bindParam(':email', $email);
