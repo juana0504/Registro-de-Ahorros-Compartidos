@@ -38,33 +38,7 @@ require_once __DIR__ . '/../../helpers/sesion.php';
     <main class="main-content">
 
         <!-- HEADER -->
-        <nav class="navbar navbar-top px-4">
-            <div class="container-fluid">
-                <div>
-                    <h5 class="mb-0 text-white">Mi Wallet 💳</h5>
-                    <small class="text-muted">Gestiona tus cuentas y tarjetas</small>
-                </div>
-                <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-primary btn-sm">
-                        <i class="bi bi-plus-lg"></i> Agregar Cuenta
-                    </button>
-                    <div class="position-relative d-none d-md-block">
-                        <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
-                        <input
-                            type="search"
-                            class="search-input ps-5"
-                            placeholder="Buscar..."
-                            aria-label="Buscar en el wallet">
-                    </div>
-                    <img
-                        src="https://i.pravatar.cc/40?img=47"
-                        class="user-avatar"
-                        alt="Avatar de usuario"
-                        role="button"
-                        tabindex="0">
-                </div>
-            </div>
-        </nav>
+    <?php include_once __DIR__ . '/../layouts/nav.php'; ?>
 
         <!-- CONTENT -->
         <div class="container-fluid p-4">
