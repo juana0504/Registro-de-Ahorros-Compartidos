@@ -18,9 +18,10 @@ require_once __DIR__ . '/../../helpers/sesion.php';
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-    <!-- MI CSS -->
+    <!-- CSS -->
+    <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/sidebar.css"> -->
+    <!-- <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/layouts/css/header.css"> -->
     <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/dashboard/css/dashboard.css">
-
 </head>
 
 <body>
@@ -34,42 +35,27 @@ require_once __DIR__ . '/../../helpers/sesion.php';
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- SIDEBAR -->
-    <?php
-    include_once __DIR__ . '/../layouts/sidebar.php';
-    ?>
+    <?php include_once __DIR__ . '/../layouts/sidebar.php'; ?>
+
+    <!-- HEADER -->
+    <?php include_once __DIR__ . '/../layouts/nav.php'; ?>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-
-        <!-- HEADER -->
-        <nav class="navbar navbar-top px-4">
-            <div class="container-fluid">
-                <h5 class="mb-0 text-white">Hola, Yair </h5>
-                <div class="d-flex align-items-center gap-3">
-                    <div class="position-relative d-none d-md-block">
-                        <i class="bi bi-search position-absolute top-50 translate-middle-y ms-3 text-muted"></i>
-                        <input type="search" class="search-input ps-5" placeholder="Buscar..."
-                            aria-label="Buscar en el dashboard">
-                    </div>
-                    <img src="https://i.pravatar.cc/40?img=47" class="user-avatar" alt="Avatar de usuario" role="button"
-                        tabindex="0">
-                </div>
-            </div>
-        </nav>
-
+        
         <!-- CONTENT -->
-        <div class="container-fluid p-4">
+        <div class="container-fluid">
             <div class="row g-4">
 
                 <!-- BALANCE TOTAL -->
                 <div class="col-12 col-md-6 col-xl-3">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="text-muted mb-0">Balance Total</h6>
-                                <i class="bi bi-three-dots-vertical text-muted" role="button"></i>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h6 class="mb-0">BALANCE TOTAL</h6>
+                                <i class="bi bi-three-dots-vertical" role="button"></i>
                             </div>
-                            <div class="balance-amount mb-2">$857,850</div>
+                            <div class="balance-amount mb-3">$857,850</div>
                             <div class="d-flex align-items-center gap-2 text-success">
                                 <i class="bi bi-arrow-up-circle-fill"></i>
                                 <small>+12.5% este mes</small>
@@ -82,11 +68,11 @@ require_once __DIR__ . '/../../helpers/sesion.php';
                 <div class="col-12 col-md-6 col-xl-3">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="text-muted mb-0">Ingresos</h6>
-                                <i class="bi bi-three-dots-vertical text-muted" role="button"></i>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h6 class="mb-0">INGRESOS</h6>
+                                <i class="bi bi-three-dots-vertical" role="button"></i>
                             </div>
-                            <h3 class="fw-bold text-success mb-2">$198,110</h3>
+                            <h3 class="text-success mb-3">+$198,110</h3>
                             <div class="d-flex align-items-center gap-2 text-success">
                                 <i class="bi bi-arrow-up-circle-fill"></i>
                                 <small>+8.2% vs mes anterior</small>
@@ -99,11 +85,11 @@ require_once __DIR__ . '/../../helpers/sesion.php';
                 <div class="col-12 col-md-6 col-xl-3">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="text-muted mb-0">Gastos</h6>
-                                <i class="bi bi-three-dots-vertical text-muted" role="button"></i>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h6 class="mb-0">GASTOS</h6>
+                                <i class="bi bi-three-dots-vertical" role="button"></i>
                             </div>
-                            <h3 class="fw-bold text-danger mb-2">$145,280</h3>
+                            <h3 class="text-danger mb-3">-$145,280</h3>
                             <div class="d-flex align-items-center gap-2 text-danger">
                                 <i class="bi bi-arrow-down-circle-fill"></i>
                                 <small>+5.1% vs mes anterior</small>
@@ -116,81 +102,97 @@ require_once __DIR__ . '/../../helpers/sesion.php';
                 <div class="col-12 col-md-6 col-xl-3">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-start mb-2">
-                                <h6 class="text-muted mb-0">Ahorros</h6>
-                                <i class="bi bi-three-dots-vertical text-muted" role="button"></i>
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h6 class="mb-0">AHORROS</h6>
+                                <i class="bi bi-three-dots-vertical" role="button"></i>
                             </div>
-                            <h3 class="fw-bold text-info mb-2">$52,830</h3>
+                            <h3 class="text-info mb-3">+$52,830</h3>
                             <div class="d-flex align-items-center gap-2 text-info">
-                                <i class="bi bi-arrow-up-circle-fill"></i>
+                                <i class="bi bi-circle-fill" style="font-size: 0.5rem;"></i>
                                 <small>27% de tus ingresos</small>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- TRANSACCIONES -->
-                <div class="col-12 col-lg-6 col-xl-9">
+                <div class="col-12 col-lg-8 col-xl-9">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Transacciones</h6>
-                                <a href="#" class="text-decoration-none small text-muted">Ver todas</a>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0">Transacciones Recientes</h6>
+                                <a href="#" class="text-decoration-none small">Ver todas <i class="bi bi-arrow-right"></i></a>
                             </div>
 
                             <div class="d-flex flex-column gap-2">
-                                <div class="transaction-item d-flex justify-content-between align-items-center">
+                                <!-- Transacción 1 -->
+                                <div class="transaction-item">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div class="bg-primary bg-opacity-10 rounded p-2">
-                                            <span style="font-size: 1.2rem;"><i class="bi bi-cart"></i></span>
+                                        <div class="bg-primary bg-opacity-10 rounded">
+                                            <i class="bi bi-cart" style="font-size: 1.25rem;"></i>
                                         </div>
-                                        <div>
-                                            <div class="fw-medium">Supermercado</div>
-                                            <span class="text-danger fw-bold">-$1,234</span>
-                                            <br>
-                                            <small class="text-muted">Hoy, 10:30 AM</small>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <div class="fw-medium">Supermercado</div>
+                                                    <small class="text-muted">Hoy, 10:30 AM</small>
+                                                </div>
+                                                <span class="text-danger fw-bold">-$1,234</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="transaction-item d-flex justify-content-between align-items-center">
+                                <!-- Transacción 2 -->
+                                <div class="transaction-item">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div class="bg-success bg-opacity-10 rounded p-2">
-                                            <span style="font-size: 1.2rem;"><i class="bi bi-currency-dollar"></i></span>
+                                        <div class="bg-success bg-opacity-10 rounded">
+                                            <i class="bi bi-currency-dollar" style="font-size: 1.25rem;"></i>
                                         </div>
-                                        <div>
-                                            <div class="fw-medium">Salario</div>
-                                            <span class="text-success fw-bold">+$5,000</span>
-                                            <br>
-                                            <small class="text-muted">Ayer, 9:00 AM</small>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <div class="fw-medium">Salario</div>
+                                                    <small class="text-muted">Ayer, 9:00 AM</small>
+                                                </div>
+                                                <span class="text-success fw-bold">+$5,000</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="transaction-item d-flex justify-content-between align-items-center">
+                                <!-- Transacción 3 -->
+                                <div class="transaction-item">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div class="bg-danger bg-opacity-10 rounded p-2">
-                                            <span style="font-size: 1.2rem;"><i class="bi bi-tv"></i></span>
+                                        <div class="bg-danger bg-opacity-10 rounded">
+                                            <i class="bi bi-tv" style="font-size: 1.25rem;"></i>
                                         </div>
-                                        <div>
-                                            <div class="fw-medium">Netflix</div>
-                                            <span class="text-danger fw-bold">-$50</span>
-                                            <br>
-                                            <small class="text-muted">Hace 2 días</small>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <div class="fw-medium">Netflix</div>
+                                                    <small class="text-muted">Hace 2 días</small>
+                                                </div>
+                                                <span class="text-danger fw-bold">-$50</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="transaction-item d-flex justify-content-between align-items-center">
+                                <!-- Transacción 4 -->
+                                <div class="transaction-item">
                                     <div class="d-flex align-items-center gap-3">
-                                        <div class="bg-warning bg-opacity-10 rounded p-2">
-                                            <span style="font-size: 1.2rem;"><i class="bi bi-heart-pulse"></i></span>
+                                        <div class="bg-warning bg-opacity-10 rounded">
+                                            <i class="bi bi-heart-pulse" style="font-size: 1.25rem;"></i>
                                         </div>
-                                        <div>
-                                            <div class="fw-medium">Salud</div>
-                                            <span class="text-danger fw-bold">-$850</span>
-                                            <br>
-                                            <small class="text-muted">Hace 3 días</small>
+                                        <div class="flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div>
+                                                    <div class="fw-medium">Salud</div>
+                                                    <small class="text-muted">Hace 3 días</small>
+                                                </div>
+                                                <span class="text-danger fw-bold">-$850</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -200,58 +202,53 @@ require_once __DIR__ . '/../../helpers/sesion.php';
                 </div>
 
                 <!-- CATEGORÍAS -->
-                <div class="col-12 col-lg-6 col-xl-3">
+                <div class="col-12 col-lg-4 col-xl-3">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Categorías</h6>
-                                <a href="#" class="text-decoration-none small text-muted">Ver todo</a>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0">Gastos por Categoría</h6>
+                                <a href="#" class="text-decoration-none small">Ver más</a>
                             </div>
-                            <div class="d-flex justify-content-center mb-3">
-                                <div style="max-width: 200px;">
-                                    <canvas id="pieChart"></canvas>
-                                </div>
+                            
+                            <div class="d-flex justify-content-center mb-4">
+                                <canvas id="pieChart"></canvas>
                             </div>
+                            
                             <div class="d-flex flex-column gap-2">
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #818cf8; width: 8px; height: 8px; padding: 0;"></span>
+                                        <span class="badge" style="background: #818cf8; width: 10px; height: 10px; padding: 0;"></span>
                                         <small>Comida</small>
                                     </span>
-                                    <small class="text-muted">35%</small>
+                                    <small class="fw-medium">35%</small>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #f472b6; width: 8px; height: 8px; padding: 0;"></span>
+                                        <span class="badge" style="background: #f472b6; width: 10px; height: 10px; padding: 0;"></span>
                                         <small>Transporte</small>
                                     </span>
-                                    <small class="text-muted">20%</small>
+                                    <small class="fw-medium">20%</small>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #fbbf24; width: 8px; height: 8px; padding: 0;"></span>
+                                        <span class="badge" style="background: #fbbf24; width: 10px; height: 10px; padding: 0;"></span>
                                         <small>Entretenimiento</small>
                                     </span>
-                                    <small class="text-muted">15%</small>
+                                    <small class="fw-medium">15%</small>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #34d399; width: 8px; height: 8px; padding: 0;"></span>
+                                        <span class="badge" style="background: #34d399; width: 10px; height: 10px; padding: 0;"></span>
                                         <small>Servicios</small>
                                     </span>
-                                    <small class="text-muted">18%</small>
+                                    <small class="fw-medium">18%</small>
                                 </div>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="d-flex align-items-center gap-2">
-                                        <span class="badge"
-                                            style="background: #60a5fa; width: 8px; height: 8px; padding: 0;"></span>
+                                        <span class="badge" style="background: #60a5fa; width: 10px; height: 10px; padding: 0;"></span>
                                         <small>Otros</small>
                                     </span>
-                                    <small class="text-muted">12%</small>
+                                    <small class="fw-medium">12%</small>
                                 </div>
                             </div>
                         </div>
@@ -262,41 +259,56 @@ require_once __DIR__ . '/../../helpers/sesion.php';
                 <div class="col-12 col-lg-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Inversiones</h6>
-                                <a href="#" class="text-decoration-none small text-muted">Ver detalles</a>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0">Mis Inversiones</h6>
+                                <a href="#" class="text-decoration-none small">Ver detalles</a>
                             </div>
 
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Criptomonedas</span>
-                                    <span class="fw-bold">$12,500 <small class="text-success">(+45%)</small></span>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <div class="fw-medium">Criptomonedas</div>
+                                        <small class="text-muted">Bitcoin, Ethereum</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold">$12,500</div>
+                                        <small class="text-success">+45%</small>
+                                    </div>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar" style="width:45%; background: #818cf8;" role="progressbar"
-                                        aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar" style="width:45%; background: #818cf8;" role="progressbar"></div>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Acciones</span>
-                                    <span class="fw-bold">$8,300 <small class="text-success">(+30%)</small></span>
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <div class="fw-medium">Acciones</div>
+                                        <small class="text-muted">Tech & Healthcare</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold">$8,300</div>
+                                        <small class="text-success">+30%</small>
+                                    </div>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar" style="width:30%; background: #34d399;" role="progressbar"
-                                        aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar" style="width:30%; background: #34d399;" role="progressbar"></div>
                                 </div>
                             </div>
 
                             <div>
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span>Fondos</span>
-                                    <span class="fw-bold">$5,200 <small class="text-warning">(+25%)</small></span>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div>
+                                        <div class="fw-medium">Fondos de Inversión</div>
+                                        <small class="text-muted">Fondos mixtos</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="fw-bold">$5,200</div>
+                                        <small class="text-warning">+25%</small>
+                                    </div>
                                 </div>
                                 <div class="progress">
-                                    <div class="progress-bar" style="width:25%; background: #fbbf24;" role="progressbar"
-                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar" style="width:25%; background: #fbbf24;" role="progressbar"></div>
                                 </div>
                             </div>
                         </div>
@@ -307,33 +319,37 @@ require_once __DIR__ . '/../../helpers/sesion.php';
                 <div class="col-12 col-lg-6">
                     <div class="card h-100">
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h6 class="fw-bold mb-0">Metas de Ahorro</h6>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h6 class="mb-0">Metas de Ahorro</h6>
                                 <button class="btn btn-sm btn-primary">
                                     <i class="bi bi-plus-lg"></i> Nueva meta
                                 </button>
                             </div>
 
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between mb-2">
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
-                                        <div class="fw-medium"><i class="bi bi-house"></i> Casa Nueva</div>
+                                        <div class="fw-medium">
+                                            <i class="bi bi-house-fill text-success"></i> Casa Nueva
+                                        </div>
                                         <small class="text-muted">$45,000 de $100,000</small>
                                     </div>
-                                    <span class="fw-bold">45%</span>
+                                    <span class="fw-bold text-success">45%</span>
                                 </div>
                                 <div class="progress">
                                     <div class="progress-bar bg-success" style="width:45%" role="progressbar"></div>
                                 </div>
                             </div>
 
-                            <div class="mb-3">
-                                <div class="d-flex justify-content-between mb-2">
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
-                                        <div class="fw-medium"><i class="bi bi-car-front-fill"></i> Auto</div>
+                                        <div class="fw-medium">
+                                            <i class="bi bi-car-front-fill text-info"></i> Auto Nuevo
+                                        </div>
                                         <small class="text-muted">$18,000 de $30,000</small>
                                     </div>
-                                    <span class="fw-bold">60%</span>
+                                    <span class="fw-bold text-info">60%</span>
                                 </div>
                                 <div class="progress">
                                     <div class="progress-bar bg-info" style="width:60%" role="progressbar"></div>
@@ -341,12 +357,14 @@ require_once __DIR__ . '/../../helpers/sesion.php';
                             </div>
 
                             <div>
-                                <div class="d-flex justify-content-between mb-2">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
                                     <div>
-                                        <div class="fw-medium"><i class="bi bi-airplane-engines-fill"></i> Vacaciones</div>
+                                        <div class="fw-medium">
+                                            <i class="bi bi-airplane-engines-fill text-warning"></i> Vacaciones
+                                        </div>
                                         <small class="text-muted">$3,500 de $5,000</small>
                                     </div>
-                                    <span class="fw-bold">70%</span>
+                                    <span class="fw-bold text-warning">70%</span>
                                 </div>
                                 <div class="progress">
                                     <div class="progress-bar bg-warning" style="width:70%" role="progressbar"></div>
@@ -360,7 +378,10 @@ require_once __DIR__ . '/../../helpers/sesion.php';
         </div>
     </main>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="<?= BASE_URL ?>/public/assets/layouts/js/sidebar.js"></script>
+    <script src="<?= BASE_URL ?>/public/assets/layouts/js/header.js"></script>
     <script src="<?= BASE_URL ?>/public/assets/dashboard/js/dashboard.js"></script>
 </body>
 

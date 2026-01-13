@@ -47,37 +47,14 @@
                          <i class="bi bi-chat-dots-fill"></i>
                          <span>Mensajes</span>
                      </a>
-                     <a class="nav-link" href="#" data-tooltip="Notificaciones">
-                         <i class="bi bi-bell-fill"></i>
-                         <span>Notificaciones</span>
-                         <span class="notification-badge">3</span>
-                     </a>
                  </div>
              </div>
 
              <div class="nav-divider"></div>
 
-             <!-- Sección Configuración -->
-             <div class="nav-section">
-                 <div class="nav-section-title">Sistema</div>
-                 <div class="nav-links">
-                     <a class="nav-link" href="#" data-tooltip="Configuración">
-                         <i class="bi bi-gear-fill"></i>
-                         <span>Configuración</span>
-                     </a>
-                 </div>
-             </div>
-         </nav>
-
-         <!-- FOOTER -->
-         <div class="sidebar-footer">
-             <a class="nav-link logout" href="<?= BASE_URL ?>/cerrar-sesion" data-tooltip="Cerrar sesión" onclick="return confirm('¿Seguro que deseas cerrar sesión?')">
-                 <i class="bi bi-box-arrow-right"></i>
-                 <span>Cerrar sesión</span>
-             </a>
-         </div>
      </div>
  </aside>
 
  <!-- OVERLAY MÓVIL -->
  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <script src="<?= BASE_URL ?>/public/assets/layouts/js/sidebar.js"></script>
