@@ -25,6 +25,9 @@ switch ($request) {
     case '/iniciar-sesion':
         require BASE_PATH . '/app/controllers/login.php';
         break;
+    case '/cerrar-sesion':
+        require BASE_PATH . '/app/controllers/cerrarSesion.php';
+        break;
 
     case '/dashboard':
         require BASE_PATH . '/app/views/dashboard/inicio.php';

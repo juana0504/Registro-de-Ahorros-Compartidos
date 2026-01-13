@@ -71,7 +71,7 @@
 
          <!-- FOOTER -->
          <div class="sidebar-footer">
-             <a class="nav-link logout" href="#" data-tooltip="Cerrar sesión" onclick="return confirm('¿Seguro que deseas cerrar sesión?')">
+             <a class="nav-link logout" href="<?= BASE_URL ?>/cerrar-sesion" data-tooltip="Cerrar sesión" onclick="return confirm('¿Seguro que deseas cerrar sesión?')">
                  <i class="bi bi-box-arrow-right"></i>
                  <span>Cerrar sesión</span>
              </a>

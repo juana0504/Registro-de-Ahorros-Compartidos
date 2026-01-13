@@ -88,8 +88,8 @@ function registrarUsuario(){
     $resultado = $objUsuario->registrar($data);
 
     if ($resultado === true) {
-        mostrarSweetAlert('success', 'Registro exitoso', 'Proveedor registrado.',  BASE_URL . '/' );
+        mostrarSweetAlert('success', 'Registro exitoso', 'Usuario registrado.',  BASE_URL . '/' );
     }else{
-        mostrarSweetAlert('error', 'Error al registrar', 'No se pudo registrar el proveedor.');
+        mostrarSweetAlert('error', 'Error al registrar', 'No se pudo registrar el Usuario.');
     }
 }
