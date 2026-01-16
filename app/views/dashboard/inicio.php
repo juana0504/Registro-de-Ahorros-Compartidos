@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../../helpers/sesion.php';
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es" data-bs-theme="dark">
 
