@@ -38,7 +38,10 @@ switch ($request) {
     case '/transaciones':
         require BASE_PATH . '/app/views/dashboard/transaciones.php';
         break;
-
+    case '/mi-perfil':
+        require BASE_PATH . '/app/views/dashboard/perfil.php';
+        break;
+    
     case '/guardar-usuario':
         require BASE_PATH . '/app/controllers/registrar.php';  //redirige al guardar usuario
         break;
