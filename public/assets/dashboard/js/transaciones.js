@@ -1,486 +1,552 @@
-// ============================================
-// CONFIGURACIÓN
-// ============================================
-const colors = {
-    purple: '#818cf8',
-    pink: '#f472b6',
-    success: '#34d399',
-    danger: '#f87171',
-    info: '#60a5fa',
-    warning: '#fbbf24'
-};
+// ========================================
+// DATOS DE EJEMPLO - Historial Completo
+// ========================================
+let transactions = [
+    // Enero 2025
+    { id: 1, concept: 'Salario Mensual', category: 'Salario', type: 'income', amount: 5000, date: '2025-01-01', time: '08:00', notes: 'Pago de nómina empresa XYZ' },
+    { id: 2, concept: 'Pago Netflix', category: 'Entretenimiento', type: 'expense', amount: 50, date: '2025-01-02', time: '10:30', notes: 'Plan Premium' },
+    { id: 3, concept: 'Supermercado Éxito', category: 'Alimentación', type: 'expense', amount: 350, date: '2025-01-03', time: '18:45', notes: 'Compra mensual' },
+    { id: 4, concept: 'Gasolina', category: 'Transporte', type: 'expense', amount: 80, date: '2025-01-04', time: '07:15', notes: 'Tanque lleno' },
+    { id: 5, concept: 'Freelance Web', category: 'Freelance', type: 'income', amount: 1200, date: '2025-01-05', time: '16:20', notes: 'Desarrollo página web cliente' },
+    { id: 6, concept: 'Restaurante', category: 'Alimentación', type: 'expense', amount: 120, date: '2025-01-06', time: '13:30', notes: 'Almuerzo familiar' },
+    { id: 7, concept: 'Spotify Premium', category: 'Entretenimiento', type: 'expense', amount: 25, date: '2025-01-07', time: '09:00', notes: 'Suscripción mensual' },
+    { id: 8, concept: 'Farmacia', category: 'Salud', type: 'expense', amount: 65, date: '2025-01-08', time: '11:20', notes: 'Medicamentos' },
+    { id: 9, concept: 'Venta artículo usado', category: 'Otros', type: 'income', amount: 200, date: '2025-01-08', time: '15:45', notes: 'Venta por marketplace' },
+    { id: 10, concept: 'Electricidad', category: 'Servicios', type: 'expense', amount: 180, date: '2025-01-09', time: '10:00', notes: 'Factura mensual' },
+    { id: 11, concept: 'Internet', category: 'Servicios', type: 'expense', amount: 100, date: '2025-01-09', time: '10:15', notes: 'Plan 200 Mbps' },
+    { id: 12, concept: 'Taxi Uber', category: 'Transporte', type: 'expense', amount: 35, date: '2025-01-10', time: '08:30', notes: 'Viaje al centro' },
+    { id: 13, concept: 'Curso Online', category: 'Educación', type: 'expense', amount: 150, date: '2025-01-10', time: '20:00', notes: 'Udemy - JavaScript Avanzado' },
+    { id: 14, concept: 'Cafetería', category: 'Alimentación', type: 'expense', amount: 15, date: '2025-01-11', time: '09:00', notes: 'Café con amigos' },
+    { id: 15, concept: 'Bonificación', category: 'Salario', type: 'income', amount: 500, date: '2025-01-11', time: '14:00', notes: 'Bono por desempeño' },
+    { id: 16, concept: 'Cine', category: 'Entretenimiento', type: 'expense', amount: 45, date: '2025-01-12', time: '19:30', notes: '2 boletas + combo' },
+    { id: 17, concept: 'Supermercado Carulla', category: 'Alimentación', type: 'expense', amount: 280, date: '2025-01-13', time: '17:00', notes: 'Compra semanal' },
+    { id: 18, concept: 'Parqueadero', category: 'Transporte', type: 'expense', amount: 20, date: '2025-01-13', time: '12:00', notes: 'Centro comercial' },
+    
+    // Diciembre 2024
+    { id: 19, concept: 'Salario Diciembre', category: 'Salario', type: 'income', amount: 5000, date: '2024-12-01', time: '08:00', notes: 'Nómina mensual' },
+    { id: 20, concept: 'Regalo Navidad', category: 'Otros', type: 'expense', amount: 300, date: '2024-12-15', time: '16:30', notes: 'Regalos familia' },
+    { id: 21, concept: 'Cena Navidad', category: 'Alimentación', type: 'expense', amount: 250, date: '2024-12-24', time: '19:00', notes: 'Cena familiar' },
+    { id: 22, concept: 'Aguinaldo', category: 'Salario', type: 'income', amount: 2000, date: '2024-12-20', time: '10:00', notes: 'Prima de Navidad' },
+    
+    // Noviembre 2024
+    { id: 23, concept: 'Salario Noviembre', category: 'Salario', type: 'income', amount: 5000, date: '2024-11-01', time: '08:00', notes: 'Nómina mensual' },
+    { id: 24, concept: 'Freelance Diseño', category: 'Freelance', type: 'income', amount: 800, date: '2024-11-10', time: '14:30', notes: 'Logo para startup' },
+    { id: 25, concept: 'Seguro Auto', category: 'Servicios', type: 'expense', amount: 400, date: '2024-11-05', time: '11:00', notes: 'Póliza anual' },
+    
+    // Más transacciones antiguas
+    { id: 26, concept: 'Gym Mensualidad', category: 'Salud', type: 'expense', amount: 120, date: '2024-10-15', time: '07:00', notes: 'Membresía mensual' },
+    { id: 27, concept: 'Consulta Médica', category: 'Salud', type: 'expense', amount: 150, date: '2024-10-20', time: '10:30', notes: 'Control general' },
+    { id: 28, concept: 'Venta Freelance', category: 'Freelance', type: 'income', amount: 1500, date: '2024-10-25', time: '16:00', notes: 'Proyecto WordPress' },
+    { id: 29, concept: 'Amazon Prime', category: 'Entretenimiento', type: 'expense', amount: 30, date: '2024-10-01', time: '00:00', notes: 'Suscripción anual' },
+    { id: 30, concept: 'Libros', category: 'Educación', type: 'expense', amount: 85, date: '2024-09-15', time: '14:20', notes: '3 libros técnicos' }
+];
 
-// ============================================
-// MENÚ MÓVIL
-// ============================================
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-const sidebar = document.getElementById('sidebar');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
+// ========================================
+// VARIABLES GLOBALES
+// ========================================
+let filteredTransactions = [...transactions];
+const itemsPerPage = 10;
+let currentPage = 1;
+let chartInstance = null;
 
-function toggleSidebar() {
-    sidebar.classList.toggle('active');
-    sidebarOverlay.classList.toggle('active');
-}
-
-if (mobileMenuBtn) {
-    mobileMenuBtn.addEventListener('click', toggleSidebar);
-}
-
-if (sidebarOverlay) {
-    sidebarOverlay.addEventListener('click', toggleSidebar);
-}
-
-// Cerrar sidebar al hacer clic en un link (móvil)
-document.querySelectorAll('.sidebar .nav-link').forEach(link => {
-    link.addEventListener('click', function() {
-        if (window.innerWidth <= 768) {
-            toggleSidebar();
-        }
-    });
+// ========================================
+// INICIALIZACIÓN
+// ========================================
+document.addEventListener('DOMContentLoaded', function() {
+    initializeApp();
 });
 
-// ============================================
-// GRÁFICO DE TENDENCIA
-// ============================================
-const trendCtx = document.getElementById('trendChart');
-let trendChart;
-
-const chartData = {
-    week: {
-        labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-        income: [400, 300, 500, 278, 489, 539, 349],
-        expense: [240, 139, 380, 390, 280, 320, 220]
-    },
-    month: {
-        labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-        income: [15000, 18000, 16500, 19200],
-        expense: [12000, 13500, 11800, 14200]
-    },
-    year: {
-        labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        income: [45000, 48000, 52000, 48000, 55000, 60000, 58000, 62000, 65000, 68000, 70000, 75000],
-        expense: [32000, 35000, 38000, 36000, 40000, 42000, 44000, 46000, 48000, 45000, 50000, 52000]
-    }
-};
-
-function createTrendChart(period = 'week') {
-    const data = chartData[period];
+function initializeApp() {
+    // Configurar fecha y hora actual en el formulario
+    const now = new Date();
+    document.getElementById('date').valueAsDate = now;
+    document.getElementById('time').value = now.toTimeString().slice(0, 5);
     
-    if (trendChart) {
-        trendChart.destroy();
-    }
+    // Renderizar contenido inicial
+    renderTable();
+    initializeChart();
     
-    trendChart = new Chart(trendCtx, {
+    // Event Listeners
+    setupEventListeners();
+}
+
+// ========================================
+// EVENT LISTENERS
+// ========================================
+function setupEventListeners() {
+    // Sidebar toggle
+    document.getElementById('menuBtn').onclick = () => {
+        document.getElementById('sidebar').classList.toggle('active');
+    };
+    
+    // Filtros
+    document.getElementById('search').oninput = applyFilters;
+    document.getElementById('typeFilter').onchange = applyFilters;
+    document.getElementById('dateFilter').onchange = applyFilters;
+    
+    // Formulario
+    document.getElementById('transactionForm').onsubmit = handleFormSubmit;
+    
+    // Select all
+    document.getElementById('selectAll').onchange = handleSelectAll;
+    
+    // Delete selected
+    document.getElementById('deleteSelected').onclick = deleteSelected;
+}
+
+// ========================================
+// RENDERIZAR TABLA
+// ========================================
+function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const paginatedItems = filteredTransactions.slice(start, end);
+
+    if (paginatedItems.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="7" class="empty-state">
+                    <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                    <p class="mb-0">No se encontraron transacciones</p>
+                    <small>Intenta ajustar los filtros o agrega una nueva transacción</small>
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    tbody.innerHTML = paginatedItems.map(t => `
+        <tr class="transaction-row" data-id="${t.id}">
+            <td>
+                <input type="checkbox" class="form-check-input row-checkbox" value="${t.id}">
+            </td>
+            <td>
+                <div>
+                    <strong>${t.concept}</strong>
+                    ${t.notes ? `<br><small class="text-secondary">${t.notes}</small>` : ''}
+                </div>
+            </td>
+            <td>
+                <span class="badge bg-secondary">${t.category}</span>
+            </td>
+            <td>
+                <div class="date-badge">
+                    <i class="bi bi-calendar3"></i> ${formatDate(t.date)}
+                    <br>
+                    <i class="bi bi-clock"></i> ${t.time}
+                </div>
+            </td>
+            <td>
+                <span class="badge-custom ${t.type === 'income' ? 'badge-income' : 'badge-expense'}">
+                    <i class="bi bi-arrow-${t.type === 'income' ? 'up' : 'down'}-circle"></i>
+                    ${t.type === 'income' ? 'Ingreso' : 'Gasto'}
+                </span>
+            </td>
+            <td class="text-end fw-bold ${t.type === 'income' ? 'text-success' : 'text-danger'}">
+                ${t.type === 'income' ? '+' : '-'}$${formatNumber(t.amount)}
+            </td>
+            <td class="text-end">
+                <button class="btn btn-sm action-btn me-1" onclick="editTransaction(${t.id})" title="Editar">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-sm action-btn" onclick="deleteTransaction(${t.id})" title="Eliminar">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        </tr>
+    `).join('');
+
+    updateStats();
+    renderPagination();
+}
+
+// ========================================
+// ESTADÍSTICAS
+// ========================================
+function updateStats() {
+    const income = transactions
+        .filter(t => t.type === 'income')
+        .reduce((sum, t) => sum + t.amount, 0);
+    
+    const expense = transactions
+        .filter(t => t.type === 'expense')
+        .reduce((sum, t) => sum + t.amount, 0);
+    
+    const balance = income - expense;
+    
+    document.getElementById('totalIncome').textContent = formatNumber(income);
+    document.getElementById('totalExpense').textContent = formatNumber(expense);
+    document.getElementById('balance').textContent = formatNumber(balance);
+    document.getElementById('totalTransactions').textContent = transactions.length;
+}
+
+// ========================================
+// GRÁFICO
+// ========================================
+function initializeChart() {
+    const ctx = document.getElementById('chart').getContext('2d');
+    
+    // Agrupar datos por día (últimos 7 días)
+    const last7Days = getLast7Days();
+    const incomeData = [];
+    const expenseData = [];
+    
+    last7Days.forEach(day => {
+        const dayTransactions = transactions.filter(t => t.date === day);
+        const dayIncome = dayTransactions
+            .filter(t => t.type === 'income')
+            .reduce((sum, t) => sum + t.amount, 0);
+        const dayExpense = dayTransactions
+            .filter(t => t.type === 'expense')
+            .reduce((sum, t) => sum + t.amount, 0);
+        
+        incomeData.push(dayIncome);
+        expenseData.push(dayExpense);
+    });
+    
+    const labels = last7Days.map(d => formatDateShort(d));
+    
+    chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: data.labels,
+            labels: labels,
             datasets: [
                 {
                     label: 'Ingresos',
-                    data: data.income,
-                    borderColor: colors.success,
-                    backgroundColor: 'rgba(52, 211, 153, 0.1)',
-                    fill: true,
+                    data: incomeData,
+                    borderColor: '#10b981',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
                     tension: 0.4,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointBackgroundColor: colors.success,
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2
+                    fill: true,
+                    borderWidth: 2
                 },
                 {
                     label: 'Gastos',
-                    data: data.expense,
-                    borderColor: colors.danger,
-                    backgroundColor: 'rgba(248, 113, 113, 0.1)',
-                    fill: true,
+                    data: expenseData,
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
                     tension: 0.4,
-                    pointRadius: 5,
-                    pointHoverRadius: 7,
-                    pointBackgroundColor: colors.danger,
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2
+                    fill: true,
+                    borderWidth: 2
                 }
             ]
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             plugins: {
                 legend: {
-                    display: false
+                    labels: { 
+                        color: '#94a3b8',
+                        font: { size: 12 }
+                    }
                 },
                 tooltip: {
-                    backgroundColor: '#1a1a2e',
-                    padding: 12,
-                    titleColor: '#fff',
-                    bodyColor: '#fff',
-                    borderColor: 'rgba(255, 255, 255, 0.1)',
+                    backgroundColor: 'rgba(26, 31, 53, 0.9)',
+                    titleColor: '#f8fafc',
+                    bodyColor: '#f8fafc',
+                    borderColor: '#6366f1',
                     borderWidth: 1,
                     callbacks: {
                         label: function(context) {
-                            return context.dataset.label + ': $' + context.parsed.y.toLocaleString();
+                            return context.dataset.label + ': $' + formatNumber(context.parsed.y);
                         }
                     }
                 }
             },
             scales: {
-                x: {
-                    grid: {
-                        display: false
-                    },
-                    ticks: {
-                        color: '#9ca3af'
-                    }
-                },
                 y: {
-                    grid: {
-                        color: 'rgba(255, 255, 255, 0.05)'
+                    beginAtZero: true,
+                    grid: { 
+                        color: 'rgba(148, 163, 184, 0.1)',
+                        drawBorder: false
                     },
-                    ticks: {
-                        color: '#9ca3af',
+                    ticks: { 
+                        color: '#94a3b8',
                         callback: function(value) {
-                            return '$' + (value / 1000).toFixed(0) + 'k';
+                            return '$' + formatNumber(value);
                         }
                     }
+                },
+                x: {
+                    grid: { 
+                        color: 'rgba(148, 163, 184, 0.1)',
+                        drawBorder: false
+                    },
+                    ticks: { color: '#94a3b8' }
                 }
-            },
-            interaction: {
-                intersect: false,
-                mode: 'index'
             }
         }
     });
 }
 
-// Inicializar gráfico
-if (trendCtx) {
-    createTrendChart('week');
-}
-
-// Botones de periodo
-document.querySelectorAll('[data-period]').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('[data-period]').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        createTrendChart(this.getAttribute('data-period'));
-    });
-});
-
-// ============================================
-// BÚSQUEDA Y FILTROS
-// ============================================
-const searchInput = document.getElementById('searchTransaction');
-const filterType = document.getElementById('filterType');
-const filterCategory = document.getElementById('filterCategory');
-const filterDateFrom = document.getElementById('filterDateFrom');
-const filterDateTo = document.getElementById('filterDateTo');
-
-function filterTransactions() {
-    const searchTerm = searchInput.value.toLowerCase();
-    const type = filterType.value;
-    const category = filterCategory.value;
-    const dateFrom = filterDateFrom.value;
-    const dateTo = filterDateTo.value;
-
-    const rows = document.querySelectorAll('.transaction-row');
-    let visibleCount = 0;
-
-    rows.forEach(row => {
-        const text = row.textContent.toLowerCase();
-        const rowType = row.getAttribute('data-type');
-        const rowCategory = row.getAttribute('data-category');
-
-        let show = true;
-
-        // Filtrar por búsqueda
-        if (searchTerm && !text.includes(searchTerm)) {
-            show = false;
-        }
-
-        // Filtrar por tipo
-        if (type !== 'all' && rowType !== type) {
-            show = false;
-        }
-
-        // Filtrar por categoría
-        if (category !== 'all' && rowCategory !== category) {
-            show = false;
-        }
-
-        // Mostrar/ocultar
-        if (show) {
-            row.style.display = '';
-            visibleCount++;
-        } else {
-            row.style.display = 'none';
-        }
-    });
-
-    // Ocultar separadores de fecha si no tienen transacciones visibles
-    document.querySelectorAll('.date-separator').forEach(separator => {
-        let nextRow = separator.nextElementSibling;
-        let hasVisibleRows = false;
-
-        while (nextRow && !nextRow.classList.contains('date-separator')) {
-            if (nextRow.style.display !== 'none') {
-                hasVisibleRows = true;
-                break;
-            }
-            nextRow = nextRow.nextElementSibling;
-        }
-
-        separator.style.display = hasVisibleRows ? '' : 'none';
-    });
-
-    console.log(`Mostrando ${visibleCount} transacciones`);
-}
-
-// Event listeners para filtros
-if (searchInput) searchInput.addEventListener('input', filterTransactions);
-if (filterType) filterType.addEventListener('change', filterTransactions);
-if (filterCategory) filterCategory.addEventListener('change', filterTransactions);
-if (filterDateFrom) filterDateFrom.addEventListener('change', filterTransactions);
-if (filterDateTo) filterDateTo.addEventListener('change', filterTransactions);
-
-// ============================================
-// SELECCIÓN MÚLTIPLE
-// ============================================
-const selectAllCheckbox = document.getElementById('selectAll');
-const rowCheckboxes = document.querySelectorAll('.transaction-row input[type="checkbox"]');
-
-if (selectAllCheckbox) {
-    selectAllCheckbox.addEventListener('change', function() {
-        const visibleRows = document.querySelectorAll('.transaction-row:not([style*="display: none"])');
-        visibleRows.forEach(row => {
-            const checkbox = row.querySelector('input[type="checkbox"]');
-            if (checkbox) {
-                checkbox.checked = this.checked;
-            }
-        });
-        updateSelectedCount();
-    });
-}
-
-rowCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', updateSelectedCount);
-});
-
-function updateSelectedCount() {
-    const checked = document.querySelectorAll('.transaction-row input[type="checkbox"]:checked').length;
+// ========================================
+// PAGINACIÓN
+// ========================================
+function renderPagination() {
+    const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+    const pagination = document.getElementById('pagination');
     
-    if (checked > 0) {
-        console.log(`${checked} transacciones seleccionadas`);
-        // Aquí podrías mostrar un botón de acciones masivas
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
+        return;
     }
+    
+    let html = '';
+    
+    // Botón anterior
+    if (currentPage > 1) {
+        html += `<li class="page-item">
+            <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+        </li>`;
+    }
+    
+    // Números de página
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            html += `<li class="page-item ${i === currentPage ? 'active' : ''}">
+                <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+            </li>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            html += `<li class="page-item disabled">
+                <span class="page-link">...</span>
+            </li>`;
+        }
+    }
+    
+    // Botón siguiente
+    if (currentPage < totalPages) {
+        html += `<li class="page-item">
+            <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                <i class="bi bi-chevron-right"></i>
+            </a>
+        </li>`;
+    }
+    
+    pagination.innerHTML = html;
+
+    // Actualizar contador
+    const start = (currentPage - 1) * itemsPerPage + 1;
+    const end = Math.min(start + itemsPerPage - 1, filteredTransactions.length);
+    document.getElementById('showingCount').textContent = `${start}-${end}`;
+    document.getElementById('totalCount').textContent = filteredTransactions.length;
 }
 
-// ============================================
-// EXPORTAR TRANSACCIONES
-// ============================================
-const exportBtn = document.getElementById('exportBtn');
+function changePage(page) {
+    currentPage = page;
+    renderTable();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-if (exportBtn) {
-    exportBtn.addEventListener('click', function() {
-        // Simular descarga
-        const transactions = [];
-        document.querySelectorAll('.transaction-row:not([style*="display: none"])').forEach(row => {
-            const concept = row.querySelector('.fw-medium').textContent;
-            const category = row.querySelector('.badge').textContent;
-            const amount = row.querySelector('.text-end strong').textContent;
+// ========================================
+// FILTROS
+// ========================================
+function applyFilters() {
+    const search = document.getElementById('search').value.toLowerCase();
+    const type = document.getElementById('typeFilter').value;
+    const dateFilter = document.getElementById('dateFilter').value;
+    
+    filteredTransactions = transactions.filter(t => {
+        // Filtro de búsqueda
+        const matchSearch = t.concept.toLowerCase().includes(search) || 
+                          t.category.toLowerCase().includes(search) ||
+                          (t.notes && t.notes.toLowerCase().includes(search));
+        
+        // Filtro de tipo
+        const matchType = type === 'all' || t.type === type;
+        
+        // Filtro de fecha
+        let matchDate = true;
+        if (dateFilter !== 'all') {
+            const transDate = new Date(t.date + 'T00:00:00');
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
             
-            transactions.push({ concept, category, amount });
-        });
-
-        console.log('Exportando', transactions.length, 'transacciones');
-        showNotification(`✓ Exportando ${transactions.length} transacciones...`);
-
-        // Aquí harías la descarga real del CSV o PDF
-        // downloadCSV(transactions);
-    });
-}
-
-// ============================================
-// NUEVA TRANSACCIÓN
-// ============================================
-const newTransactionBtn = document.getElementById('newTransactionBtn');
-
-if (newTransactionBtn) {
-    newTransactionBtn.addEventListener('click', function() {
-        showNotification('Formulario de nueva transacción próximamente');
-        // Aquí abrirías un modal con formulario
-    });
-}
-
-// ============================================
-// ANIMACIÓN DE NÚMEROS
-// ============================================
-function animateNumber(element, target, duration = 1500, prefix = '$', decimals = 0) {
-    const start = 0;
-    const increment = target / (duration / 16);
-    let current = start;
-
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            current = target;
-            clearInterval(timer);
-        }
-        
-        if (decimals > 0) {
-            element.textContent = prefix + current.toFixed(decimals).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-        } else {
-            element.textContent = prefix + Math.floor(current).toLocaleString();
-        }
-    }, 16);
-}
-
-// Animar estadísticas al cargar
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        const monthIncome = document.getElementById('monthIncome');
-        const monthExpense = document.getElementById('monthExpense');
-        const totalTrans = document.getElementById('totalTrans');
-        const dailyAvg = document.getElementById('dailyAvg');
-
-        if (monthIncome) animateNumber(monthIncome, 198110, 1500, '$', 0);
-        if (monthExpense) animateNumber(monthExpense, 145280, 1500, '$', 0);
-        if (totalTrans) animateNumber(totalTrans, 247, 1000, '', 0);
-        if (dailyAvg) animateNumber(dailyAvg, 4176, 1500, '$', 0);
-    }, 300);
-});
-
-// ============================================
-// NOTIFICACIONES
-// ============================================
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `alert alert-${type} position-fixed top-0 end-0 m-3`;
-    notification.style.cssText = `
-        z-index: 9999;
-        min-width: 300px;
-        animation: slideInRight 0.3s ease;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    `;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.animation = 'fadeOut 0.3s ease';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-// ============================================
-// MENÚ CONTEXTUAL DE ACCIONES
-// ============================================
-document.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', function(e) {
-        e.preventDefault();
-        const action = this.textContent.trim();
-        
-        if (action.includes('Ver detalles')) {
-            showNotification('Mostrando detalles de la transacción');
-        } else if (action.includes('Descargar')) {
-            showNotification('Descargando comprobante...', 'info');
-        } else if (action.includes('Eliminar')) {
-            if (confirm('¿Estás seguro de eliminar esta transacción?')) {
-                const row = this.closest('.transaction-row');
-                row.style.animation = 'fadeOut 0.3s ease';
-                setTimeout(() => row.remove(), 300);
-                showNotification('Transacción eliminada', 'success');
+            if (dateFilter === 'today') {
+                matchDate = transDate.toDateString() === today.toDateString();
+            } else if (dateFilter === 'week') {
+                const weekAgo = new Date(today);
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                matchDate = transDate >= weekAgo;
+            } else if (dateFilter === 'month') {
+                matchDate = transDate.getMonth() === today.getMonth() && 
+                           transDate.getFullYear() === today.getFullYear();
             }
         }
+        
+        return matchSearch && matchType && matchDate;
     });
-});
+    
+    currentPage = 1;
+    renderTable();
+}
 
-// ============================================
-// ANIMACIONES
-// ============================================
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+// ========================================
+// CRUD OPERATIONS
+// ========================================
+function handleFormSubmit(e) {
+    e.preventDefault();
+    
+    const newTransaction = {
+        id: Date.now(), // ID temporal
+        concept: document.getElementById('concept').value,
+        category: document.getElementById('category').value,
+        type: document.getElementById('type').value,
+        amount: parseFloat(document.getElementById('amount').value),
+        date: document.getElementById('date').value,
+        time: document.getElementById('time').value,
+        notes: document.getElementById('notes').value
+    };
+    
+    // Agregar al inicio del array
+    transactions.unshift(newTransaction);
+    filteredTransactions = [...transactions];
+    
+    // Cerrar modal y resetear formulario
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addModal'));
+    modal.hide();
+    document.getElementById('transactionForm').reset();
+    
+    // Actualizar fecha y hora
+    const now = new Date();
+    document.getElementById('date').valueAsDate = now;
+    document.getElementById('time').value = now.toTimeString().slice(0, 5);
+    
+    // Re-renderizar
+    renderTable();
+    
+    // Mostrar notificación (opcional)
+    showNotification('Transacción agregada correctamente', 'success');
+}
+
+function editTransaction(id) {
+    const transaction = transactions.find(t => t.id === id);
+    if (!transaction) return;
+    
+    // Llenar formulario con datos
+    document.getElementById('concept').value = transaction.concept;
+    document.getElementById('type').value = transaction.type;
+    document.getElementById('category').value = transaction.category;
+    document.getElementById('amount').value = transaction.amount;
+    document.getElementById('date').value = transaction.date;
+    document.getElementById('time').value = transaction.time;
+    document.getElementById('notes').value = transaction.notes || '';
+    
+    // Cambiar título del modal
+    document.querySelector('#addModal .modal-title').textContent = 'Editar Transacción';
+    
+    // Abrir modal
+    const modal = new bootstrap.Modal(document.getElementById('addModal'));
+    modal.show();
+    
+    // Modificar submit para actualizar en lugar de agregar
+    const form = document.getElementById('transactionForm');
+    form.onsubmit = function(e) {
+        e.preventDefault();
+        
+        // Actualizar datos
+        transaction.concept = document.getElementById('concept').value;
+        transaction.category = document.getElementById('category').value;
+        transaction.type = document.getElementById('type').value;
+        transaction.amount = parseFloat(document.getElementById('amount').value);
+        transaction.date = document.getElementById('date').value;
+        transaction.time = document.getElementById('time').value;
+        transaction.notes = document.getElementById('notes').value;
+        
+        // Actualizar vista
+        filteredTransactions = [...transactions];
+        renderTable();
+        
+        // Cerrar modal
+        modal.hide();
+        
+        // Restaurar función original
+        form.onsubmit = handleFormSubmit;
+        document.querySelector('#addModal .modal-title').textContent = 'Nueva Transacción';
+        
+        showNotification('Transacción actualizada correctamente', 'success');
+    };
+}
+
+function deleteTransaction(id) {
+    if (!confirm('¿Estás seguro de eliminar esta transacción?')) return;
+    
+    transactions = transactions.filter(t => t.id !== id);
+    filteredTransactions = [...transactions];
+    renderTable();
+    
+    showNotification('Transacción eliminada', 'info');
+}
+
+function handleSelectAll(e) {
+    document.querySelectorAll('.row-checkbox').forEach(c => {
+        c.checked = e.target.checked;
+    });
+}
+
+function deleteSelected() {
+    const selected = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+        .map(c => parseInt(c.value));
+    
+    if (selected.length === 0) {
+        alert('Selecciona al menos una transacción');
+        return;
     }
     
-    @keyframes fadeOut {
-        from {
-            opacity: 1;
-        }
-        to {
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(style);
-
-// ============================================
-// MANEJO DE RESPONSIVE
-// ============================================
-let lastWidth = window.innerWidth;
-
-window.addEventListener('resize', function() {
-    const currentWidth = window.innerWidth;
+    if (!confirm(`¿Eliminar ${selected.length} transacción(es) seleccionada(s)?`)) return;
     
-    // Si pasamos de móvil a desktop, cerrar sidebar
-    if (lastWidth <= 768 && currentWidth > 768) {
-        sidebar.classList.remove('active');
-        sidebarOverlay.classList.remove('active');
-    }
+    transactions = transactions.filter(t => !selected.includes(t.id));
+    filteredTransactions = [...transactions];
+    document.getElementById('selectAll').checked = false;
+    renderTable();
     
-    lastWidth = currentWidth;
-    
-    // Redimensionar gráfico
-    if (trendChart) {
-        trendChart.resize();
+    showNotification(`${selected.length} transacciones eliminadas`, 'info');
+}
+
+// ========================================
+// UTILIDADES
+// ========================================
+function formatNumber(num) {
+    return num.toLocaleString('es-CO', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    });
+}
+
+function formatDate(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    return date.toLocaleDateString('es-ES', { 
+        day: '2-digit', 
+        month: 'short', 
+        year: 'numeric' 
+    });
+}
+
+function formatDateShort(dateStr) {
+    const date = new Date(dateStr + 'T00:00:00');
+    const days = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    return days[date.getDay()];
+}
+
+function getLast7Days() {
+    const days = [];
+    for (let i = 6; i >= 0; i--) {
+        const date = new Date();
+        date.setDate(date.getDate() - i);
+        days.push(date.toISOString().split('T')[0]);
     }
-});
+    return days;
+}
 
-// ============================================
-// TOOLTIPS
-// ============================================
-const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-tooltipTriggerList.map(function (tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl);
-});
-
-// ============================================
-// ESTABLECER FECHAS POR DEFECTO
-// ============================================
-window.addEventListener('load', function() {
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+function showNotification(message, type = 'info') {
+    // Implementación simple - puedes mejorarla con toast notifications
+    console.log(`[${type.toUpperCase()}] ${message}`);
     
-    if (filterDateFrom) {
-        filterDateFrom.valueAsDate = firstDay;
-    }
-    
-    if (filterDateTo) {
-        filterDateTo.valueAsDate = today;
-    }
-});
-
-// ============================================
-// DEBUGGING
-// ============================================
-console.log('Transactions JS cargado correctamente ✅');
-console.log('Transacciones en tabla:', document.querySelectorAll('.transaction-row').length);
-console.log('Chart.js versión:', Chart.version);
-
-// ============================================
-// EXPORTAR FUNCIONES ÚTILES
-// ============================================
-window.transactionsUtils = {
-    filterTransactions,
-    showNotification,
-    animateNumber,
-    toggleSidebar
-};
+    // Opcional: Usar Bootstrap toast
+    // const toast = document.createElement('div');
+    // toast.className = 'toast';
+    // ...
+}

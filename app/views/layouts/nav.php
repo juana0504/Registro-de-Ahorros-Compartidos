@@ -14,7 +14,7 @@ $usuario = mostrarUsuario($id);
 
 <nav class="navbar-top">
     <div class="container-fluid">
-        
+
         <!-- BOTÓN HAMBURGUESA (MÓVIL) -->
         <button class="hamburger-btn" aria-label="Abrir menú">
             <i class="bi bi-list"></i>
@@ -31,16 +31,15 @@ $usuario = mostrarUsuario($id);
 
         <!-- ACCIONES DEL HEADER -->
         <div class="header-actions">
-            
+
             <!-- BÚSQUEDA (DESKTOP) -->
             <div class="search-container d-none d-md-block">
                 <i class="bi bi-search search-icon"></i>
-                <input 
-                    type="search" 
-                    class="search-input" 
+                <input
+                    type="search"
+                    class="search-input"
                     placeholder="Buscar transacciones, categorías..."
-                    aria-label="Buscar en el dashboard"
-                >
+                    aria-label="Buscar en el dashboard">
             </div>
 
             <!-- BOTÓN BÚSQUEDA (MÓVIL) -->
@@ -56,54 +55,56 @@ $usuario = mostrarUsuario($id);
 
             <!-- AVATAR DE USUARIO CON DROPDOWN -->
             <div class="user-avatar-container">
-                <img 
-                    src="https://i.pravatar.cc/40?img=47" 
-                    class="user-avatar" 
+                <img
+                    src="https://i.pravatar.cc/40?img=47"
+                    class="user-avatar"
                     alt="Avatar de usuario"
                     role="button"
                     tabindex="0"
-                    aria-label="Menú de usuario"
-                >
+                    aria-label="Menú de usuario">
                 <span class="status-indicator" title="En línea"></span>
 
                 <!-- DROPDOWN DEL USUARIO -->
-                <div class="user-dropdown">
-                    <!-- Header del dropdown -->
-                    <div class="dropdown-header">
-                        <div class="dropdown-user-name"><?= $usuario['nombre'] ?></div>
-                        <div class="dropdown-user-email"><?= $usuario['email'] ?></div>
-                    </div>
+                <div class="user-dropdown" role="menu" aria-label="Menú de usuario">
 
-                    <!-- Items del dropdown -->
-                    <a href="<?= BASE_URL ?>/perfil" class="dropdown-item" data-action="profile">
+                    <header class="dropdown-header">
+                        <div class="dropdown-user-name"><?= htmlspecialchars($usuario['nombre']) ?></div>
+                        <div class="dropdown-user-email"><?= htmlspecialchars($usuario['email']) ?></div>
+                    </header>
+
+                    <a href="<?= BASE_URL ?>/mi-perfil" class="dropdown-item" role="menuitem">
                         <i class="bi bi-person-circle"></i>
                         <span>Mi Perfil</span>
                     </a>
 
-                    <a href="<?= BASE_URL ?>/configuracion" class="dropdown-item" data-action="settings">
+                    <a href="<?= BASE_URL ?>/configuracion" class="dropdown-item" role="menuitem">
                         <i class="bi bi-gear-fill"></i>
                         <span>Configuración</span>
                     </a>
 
-                    <a href="<?= BASE_URL ?>/billetera" class="dropdown-item">
+                    <a href="<?= BASE_URL ?>/billetera" class="dropdown-item" role="menuitem">
                         <i class="bi bi-wallet2"></i>
                         <span>Mi Billetera</span>
                     </a>
 
-                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-divider" role="separator"></div>
 
-                    <a href="<?= BASE_URL ?>/ayuda" class="dropdown-item" data-action="help">
+                    <a href="<?= BASE_URL ?>/ayuda" class="dropdown-item" role="menuitem">
                         <i class="bi bi-question-circle-fill"></i>
                         <span>Centro de Ayuda</span>
                     </a>
 
-                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-divider" role="separator"></div>
 
-                    <a href="<?= BASE_URL ?>/cerrar-sesion" class="dropdown-item logout" >
-                        <i class="bi bi-box-arrow-right"></i>
-                        <span>Cerrar Sesión</span>
-                    </a>
+                    <form action="<?= BASE_URL ?>/cerrar-sesion" method="POST">
+                        <button type="submit" class="dropdown-item logout" role="menuitem">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Cerrar Sesión</span>
+                        </button>
+                    </form>
+
                 </div>
+
             </div>
         </div>
     </div>
@@ -113,12 +114,11 @@ $usuario = mostrarUsuario($id);
 <div class="mobile-search">
     <div class="search-container">
         <i class="bi bi-search search-icon"></i>
-        <input 
-            type="search" 
-            class="search-input" 
+        <input
+            type="search"
+            class="search-input"
             placeholder="Buscar..."
-            aria-label="Buscar en el dashboard"
-        >
+            aria-label="Buscar en el dashboard">
     </div>
 </div>
 <script src="<?= BASE_URL ?>/public/assets/layouts/js/nav.js"></script>
