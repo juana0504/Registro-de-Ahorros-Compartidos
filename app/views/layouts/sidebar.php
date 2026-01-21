@@ -31,8 +31,8 @@
                          <span>Billetera</span>
                      </a>
                      <a class="nav-link" href="<?= BASE_URL ?>/transaciones" data-tooltip="Transacciones">
-                         <i class="bi bi-credit-card-fill"></i>
-                         <span>Transacciones</span>
+                         <i class="bi bi-cash-coin"></i>
+                         <span>MI metas</span>
                      </a>
                  </div>
              </div>
