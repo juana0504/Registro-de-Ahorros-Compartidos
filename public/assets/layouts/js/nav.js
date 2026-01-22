@@ -1,520 +1,925 @@
 /**
- * ============================================
- * HEADER NAVBAR CONTROLLER - Ahorros Ya
- * ============================================
- * Maneja la funcionalidad del header incluyendo:
- * - Dropdown del usuario
- * - Búsqueda móvil
- * - Notificaciones
- * - Integración con sidebar
- * - Animaciones y transiciones
- * ============================================
+ * Navbar Manager - Sistema completo de navegación
+ * @version 2.0
  */
 
-class HeaderController {
-    /**
-     * Constructor - Inicializa el header
-     */
+class NavbarManager {
     constructor() {
-        // Elementos del DOM
-        this.navbar = document.querySelector('.navbar-top');
-        this.hamburgerBtn = document.querySelector('.hamburger-btn');
-        this.searchInput = document.querySelector('.search-input');
-        this.mobileSearch = document.querySelector('.mobile-search');
-        this.mobileSearchBtn = document.querySelector('.mobile-search-btn');
-        this.userAvatar = document.querySelector('.user-avatar-container');
-        this.userDropdown = document.querySelector('.user-dropdown');
-        this.notificationBtn = document.querySelector('.notification-btn');
-        
-        // Estado
-        this.dropdownOpen = false;
-        this.mobileSearchOpen = false;
-        
-        // Inicializar
+        // Helpers de selección
+        this.$ = (s) => document.querySelector(s);
+        this.$$ = (s) => document.querySelectorAll(s);
+
+        // Cache de elementos DOM
+        this.elements = {
+            navbar: this.$('.navbar-superior'),
+            dropdowns: {
+                notificaciones: this.$('#dropdownNotificaciones'),
+                perfil: this.$('#dropdownPerfil')
+            },
+            buttons: {
+                notificaciones: this.$('[data-dropdown="notificaciones"]'),
+                perfil: this.$('[data-dropdown="perfil"]'),
+                marcarLeidas: this.$('[data-action="marcar-leidas"]')
+            },
+            search: this.$('#inputBusqueda'),
+            modals: {
+                soporte: this.$('#modalSoporte')
+            }
+        };
+
+        // Estado de la aplicación
+        this.state = {
+            activeDropdown: null,
+            notificacionesSinLeer: 0,
+            searchDebounce: null,
+            theme: localStorage.getItem('theme') || 'light',
+            notificaciones: [],
+            loadingNotifications: false
+        };
+
+        // Configuración
+        this.config = {
+            searchDebounceTime: 300,
+            notificationRefreshInterval: 30000, // 30 segundos
+            animationDuration: 300
+        };
+
         this.init();
     }
 
-    /**
-     * Inicializa todos los eventos
-     */
+    /* ==================== INICIALIZACIÓN ==================== */
+
     init() {
-        this.attachEventListeners();
-        this.setupSearch();
-        this.loadUserData();
-        
-        console.log('✅ Header inicializado correctamente');
+        try {
+            this.initDropdowns();
+            this.initNotifications();
+            this.initSearch();
+            this.initScrollEffects();
+            this.initKeyboardNavigation();
+            this.initAccessibility();
+            
+            console.log('✅ Navbar Manager inicializado correctamente');
+        } catch (error) {
+            console.error('❌ Error al inicializar NavbarManager:', error);
+        }
     }
 
-    /**
-     * Adjunta todos los event listeners
-     */
-    attachEventListeners() {
-        // Hamburger menu (móvil)
-        if (this.hamburgerBtn) {
-            this.hamburgerBtn.addEventListener('click', () => {
-                this.toggleMobileSidebar();
-            });
-        }
+    /* ==================== DROPDOWNS ==================== */
 
-        // Avatar dropdown
-        if (this.userAvatar) {
-            this.userAvatar.addEventListener('click', (e) => {
+    initDropdowns() {
+        // Event delegation para botones con dropdown
+        this.$$('[data-dropdown]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                this.toggleUserDropdown();
+                const tipo = btn.dataset.dropdown;
+                this.toggleDropdown(tipo, btn);
             });
-        }
+        });
 
-        // Cerrar dropdown al hacer click fuera
+        // Cerrar dropdowns al hacer click fuera
         document.addEventListener('click', (e) => {
-            if (this.dropdownOpen && !this.userDropdown?.contains(e.target)) {
-                this.closeUserDropdown();
+            if (!e.target.closest('.navbar-derecha')) {
+                this.closeAllDropdowns();
             }
         });
 
-        // Cerrar dropdown con ESC
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                if (this.dropdownOpen) {
-                    this.closeUserDropdown();
-                }
-                if (this.mobileSearchOpen) {
-                    this.closeMobileSearch();
-                }
+        // Prevenir cierre al hacer click dentro del dropdown
+        this.$$('.dropdown-menu').forEach(menu => {
+            menu.addEventListener('click', (e) => e.stopPropagation());
+        });
+    }
+
+    toggleDropdown(tipo, button) {
+        const dropdown = this.elements.dropdowns[tipo];
+        if (!dropdown) return;
+
+        const isOpen = dropdown.classList.contains('show');
+        
+        // Cerrar todos primero
+        this.closeAllDropdowns();
+
+        if (!isOpen) {
+            // Abrir el dropdown
+            dropdown.classList.add('show');
+            this.state.activeDropdown = tipo;
+
+            // Actualizar ARIA
+            if (button) {
+                button.setAttribute('aria-expanded', 'true');
+            }
+
+            // Cargar notificaciones si es necesario
+            if (tipo === 'notificaciones' && !this.state.loadingNotifications) {
+                this.cargarNotificaciones();
+            }
+
+            // Manejar foco
+            this.setFocusInDropdown(dropdown);
+        } else if (button) {
+            button.setAttribute('aria-expanded', 'false');
+        }
+    }
+
+    closeAllDropdowns() {
+        Object.entries(this.elements.dropdowns).forEach(([tipo, dropdown]) => {
+            dropdown?.classList.remove('show');
+            
+            const button = this.$(`[data-dropdown="${tipo}"]`);
+            if (button) {
+                button.setAttribute('aria-expanded', 'false');
             }
         });
-
-        // Búsqueda móvil
-        if (this.mobileSearchBtn) {
-            this.mobileSearchBtn.addEventListener('click', () => {
-                this.toggleMobileSearch();
-            });
-        }
-
-        // Notificaciones
-        if (this.notificationBtn) {
-            this.notificationBtn.addEventListener('click', () => {
-                this.handleNotifications();
-            });
-        }
-
-        // Items del dropdown
-        this.setupDropdownItems();
-
-        // Scroll handler para efecto de sombra
-        this.setupScrollEffect();
-    }
-
-    /**
-     * Toggle del sidebar móvil
-     */
-    toggleMobileSidebar() {
-        if (window.sidebarController) {
-            window.sidebarController.toggle();
-        } else if (typeof toggleSidebar === 'function') {
-            toggleSidebar();
-        }
-    }
-
-    /**
-     * Toggle del dropdown de usuario
-     */
-    toggleUserDropdown() {
-        if (this.dropdownOpen) {
-            this.closeUserDropdown();
-        } else {
-            this.openUserDropdown();
-        }
-    }
-
-    /**
-     * Abre el dropdown de usuario
-     */
-    openUserDropdown() {
-        if (!this.userDropdown) return;
         
-        this.userDropdown.classList.add('show');
-        this.dropdownOpen = true;
+        this.state.activeDropdown = null;
+    }
+
+    setFocusInDropdown(dropdown) {
+        setTimeout(() => {
+            const firstFocusable = dropdown.querySelector('a, button, input');
+            firstFocusable?.focus();
+        }, 100);
+    }
+
+    /* ==================== NOTIFICACIONES ==================== */
+
+    initNotifications() {
+        // Marcar todas como leídas
+        this.elements.buttons.marcarLeidas?.addEventListener('click', () => {
+            this.marcarTodasComoLeidas();
+        });
+
+        // Cargar notificaciones inicial
+        this.cargarNotificaciones();
+
+        // Auto-refresh cada 30 segundos
+        setInterval(() => {
+            if (!this.state.activeDropdown) {
+                this.cargarNotificaciones(true); // silent refresh
+            }
+        }, this.config.notificationRefreshInterval);
+    }
+
+    async cargarNotificaciones(silent = false) {
+        if (this.state.loadingNotifications && !silent) return;
+
+        this.state.loadingNotifications = true;
+        const container = this.$('#listaNotificaciones');
         
-        // Animación de entrada para los items
-        const items = this.userDropdown.querySelectorAll('.dropdown-item');
-        items.forEach((item, index) => {
-            item.style.animation = 'none';
+        if (!silent && container) {
+            container.innerHTML = this.getLoadingTemplate();
+        }
+
+        try {
+            // Aquí harías la petición real a tu API
+            const notificaciones = await this.fetchNotificaciones();
+            
+            this.state.notificaciones = notificaciones;
+            this.renderNotificaciones(notificaciones);
+            this.actualizarContadorNotificaciones();
+
+        } catch (error) {
+            console.error('Error al cargar notificaciones:', error);
+            if (!silent && container) {
+                container.innerHTML = this.getErrorTemplate();
+            }
+        } finally {
+            this.state.loadingNotifications = false;
+        }
+    }
+
+    async fetchNotificaciones() {
+        // Simulación - reemplazar con llamada real a API
+        return new Promise((resolve) => {
             setTimeout(() => {
-                item.style.animation = `slideInDown 0.3s ease ${index * 0.05}s both`;
-            }, 10);
+                resolve([
+                    {
+                        id: 1,
+                        tipo: 'recordatorio',
+                        titulo: 'Recordatorio de vacuna para Max',
+                        tiempo: 'Hace 5 min',
+                        leida: false,
+                        icono: 'bi-bell-fill',
+                        color: 'azul'
+                    },
+                    {
+                        id: 2,
+                        tipo: 'confirmacion',
+                        titulo: 'Cita confirmada para mañana',
+                        tiempo: 'Hace 1 hora',
+                        leida: true,
+                        icono: 'bi-check-circle-fill',
+                        color: 'verde'
+                    },
+                    {
+                        id: 3,
+                        tipo: 'mensaje',
+                        titulo: 'Nuevo mensaje del veterinario',
+                        tiempo: 'Hace 3 horas',
+                        leida: false,
+                        icono: 'bi-chat-dots-fill',
+                        color: 'naranja'
+                    }
+                ]);
+            }, 500);
         });
-    }
 
-    /**
-     * Cierra el dropdown de usuario
-     */
-    closeUserDropdown() {
-        if (!this.userDropdown) return;
-        
-        this.userDropdown.classList.remove('show');
-        this.dropdownOpen = false;
-    }
-
-    /**
-     * Configura los items del dropdown
-     */
-    setupDropdownItems() {
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
-        
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const action = item.dataset.action;
-                
-                if (action) {
-                    e.preventDefault();
-                    this.handleDropdownAction(action);
-                }
-                
-                // Cerrar dropdown después de la acción
-                setTimeout(() => {
-                    this.closeUserDropdown();
-                }, 200);
-            });
-        });
-    }
-
-    /**
-     * Maneja las acciones del dropdown
-     */
-    handleDropdownAction(action) {
-        switch (action) {
-            case 'profile':
-                console.log('Navegar a perfil');
-                // window.location.href = '/profile';
-                break;
-                
-            case 'settings':
-                console.log('Navegar a configuración');
-                // window.location.href = '/settings';
-                break;
-                
-            case 'help':
-                console.log('Abrir centro de ayuda');
-                break;
-                
-            case 'logout':
-                this.handleLogout();
-                break;
-                
-            default:
-                console.log(`Acción no manejada: ${action}`);
-        }
-    }
-
-    /**
-     * Maneja el cierre de sesión
-     */
-    handleLogout() {
-        const confirmed = confirm('¿Estás seguro de que deseas cerrar sesión?');
-        
-        if (confirmed) {
-            console.log('Cerrando sesión...');
-            
-            // Mostrar loading
-            this.showLoadingState();
-            
-            // Simular logout (reemplazar con tu lógica real)
-            setTimeout(() => {
-                // window.location.href = '/logout';
-                console.log('Usuario desconectado');
-            }, 1000);
-        }
-    }
-
-    /**
-     * Muestra estado de carga
-     */
-    showLoadingState() {
-        // Puedes agregar un spinner o overlay aquí
-        console.log('Mostrando estado de carga...');
-    }
-
-    /**
-     * Configura la funcionalidad de búsqueda
-     */
-    setupSearch() {
-        if (!this.searchInput) return;
-
-        // Búsqueda en tiempo real (debounced)
-        let searchTimeout;
-        
-        this.searchInput.addEventListener('input', (e) => {
-            clearTimeout(searchTimeout);
-            
-            const query = e.target.value.trim();
-            
-            if (query.length > 0) {
-                searchTimeout = setTimeout(() => {
-                    this.performSearch(query);
-                }, 500); // Esperar 500ms después de que el usuario deje de escribir
+        /* CÓDIGO REAL PARA API:
+        const response = await fetch('/api/notificaciones', {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json'
             }
         });
-
-        // Enter para buscar
-        this.searchInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const query = e.target.value.trim();
-                if (query) {
-                    this.performSearch(query);
-                }
-            }
-        });
-    }
-
-    /**
-     * Realiza la búsqueda
-     */
-    performSearch(query) {
-        console.log(`🔍 Buscando: "${query}"`);
         
-        // Aquí puedes implementar tu lógica de búsqueda
-        // Ejemplo: hacer una petición AJAX
-        
-        /*
-        fetch(`/api/search?q=${encodeURIComponent(query)}`)
-            .then(response => response.json())
-            .then(data => {
-                this.displaySearchResults(data);
-            })
-            .catch(error => {
-                console.error('Error en búsqueda:', error);
-            });
+        if (!response.ok) throw new Error('Error al cargar notificaciones');
+        return await response.json();
         */
     }
 
-    /**
-     * Toggle de búsqueda móvil
-     */
-    toggleMobileSearch() {
-        if (this.mobileSearchOpen) {
-            this.closeMobileSearch();
-        } else {
-            this.openMobileSearch();
+    renderNotificaciones(notificaciones) {
+        const container = this.$('#listaNotificaciones');
+        if (!container) return;
+
+        if (notificaciones.length === 0) {
+            container.innerHTML = this.getEmptyNotificationsTemplate();
+            return;
         }
-    }
 
-    /**
-     * Abre búsqueda móvil
-     */
-    openMobileSearch() {
-        if (!this.mobileSearch) return;
-        
-        this.mobileSearch.classList.add('active');
-        this.mobileSearchOpen = true;
-        
-        // Focus en el input
-        const input = this.mobileSearch.querySelector('.search-input');
-        if (input) {
-            setTimeout(() => input.focus(), 300);
-        }
-    }
+        container.innerHTML = notificaciones.map(n => `
+            <a href="#" 
+               class="notificacion-item ${!n.leida ? 'no-leida' : ''}"
+               data-notif-id="${n.id}"
+               role="menuitem">
+                <div class="notif-icono notif-${n.color}">
+                    <i class="${n.icono}" aria-hidden="true"></i>
+                </div>
+                <div class="notif-contenido">
+                    <p class="notif-texto">${this.escapeHtml(n.titulo)}</p>
+                    <span class="notif-tiempo">${this.escapeHtml(n.tiempo)}</span>
+                </div>
+            </a>
+        `).join('');
 
-    /**
-     * Cierra búsqueda móvil
-     */
-    closeMobileSearch() {
-        if (!this.mobileSearch) return;
-        
-        this.mobileSearch.classList.remove('active');
-        this.mobileSearchOpen = false;
-    }
-
-    /**
-     * Maneja las notificaciones
-     */
-    handleNotifications() {
-        console.log('📬 Abriendo notificaciones');
-        
-        // Aquí puedes abrir un modal o sidebar con notificaciones
-        // Por ahora solo mostramos un log
-        
-        // Remover el badge de notificación
-        const badge = this.notificationBtn?.querySelector('.notification-count');
-        if (badge) {
-            badge.style.animation = 'fadeOut 0.3s ease';
-            setTimeout(() => {
-                badge.remove();
-            }, 300);
-        }
-    }
-
-    /**
-     * Carga datos del usuario
-     */
-    loadUserData() {
-        // Aquí puedes cargar datos del usuario desde una API
-        // Por ahora usamos datos de ejemplo
-        
-        const userData = {
-            name: 'Usuario',
-            email: 'usuario@ejemplo.com',
-            avatar: 'https://i.pravatar.cc/40?img=47',
-            notifications: 3
-        };
-        
-        this.updateUserData(userData);
-    }
-
-    /**
-     * Actualiza los datos del usuario en el UI
-     */
-    // updateUserData(data) {
-    //     // Actualizar nombre en el saludo
-    //     const greetingName = document.querySelector('.greeting-name');
-    //     if (greetingName) {
-    //         const nameText = greetingName.querySelector('span') || greetingName;
-    //         nameText.textContent = data.name;
-    //     }
-
-    //     // Actualizar email en dropdown
-    //     const dropdownEmail = document.querySelector('.dropdown-user-email');
-    //     if (dropdownEmail) {
-    //         dropdownEmail.textContent = data.email;
-    //     }
-
-    //     // Actualizar nombre en dropdown
-    //     const dropdownName = document.querySelector('.dropdown-user-name');
-    //     if (dropdownName) {
-    //         dropdownName.textContent = data.name;
-    //     }
-
-    //     console.log('✅ Datos de usuario actualizados');
-    // }
-
-    /**
-     * Setup del efecto de scroll en el header
-     */
-    setupScrollEffect() {
-        let lastScroll = 0;
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            // Agregar sombra al hacer scroll
-            if (currentScroll > 10) {
-                this.navbar?.classList.add('scrolled');
-            } else {
-                this.navbar?.classList.remove('scrolled');
-            }
-            
-            lastScroll = currentScroll;
+        // Agregar event listeners a las notificaciones
+        this.$$('.notificacion-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleNotificacionClick(item);
+            });
         });
     }
 
-    /**
-     * Obtiene la hora del día para el saludo
-     */
-    getTimeOfDay() {
-        const hour = new Date().getHours();
+    handleNotificacionClick(item) {
+        const notifId = parseInt(item.dataset.notifId);
         
-        if (hour < 12) return 'Buenos días';
-        if (hour < 18) return 'Buenas tardes';
-        return 'Buenas noches';
+        if (item.classList.contains('no-leida')) {
+            this.marcarComoLeida(notifId);
+            item.classList.remove('no-leida');
+        }
+
+        // Aquí puedes agregar lógica para navegar o mostrar detalles
+        console.log('Notificación clickeada:', notifId);
     }
 
-    /**
-     * Actualiza el saludo según la hora
-     */
-    updateGreeting() {
-        const greetingText = document.querySelector('.greeting-text');
-        if (greetingText) {
-            greetingText.textContent = this.getTimeOfDay();
+    async marcarComoLeida(notifId) {
+        try {
+            // Actualizar estado local
+            const notif = this.state.notificaciones.find(n => n.id === notifId);
+            if (notif) {
+                notif.leida = true;
+            }
+
+            this.actualizarContadorNotificaciones();
+
+            // Enviar a servidor
+            /* await fetch(`/api/notificaciones/${notifId}/marcar-leida`, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }); */
+
+        } catch (error) {
+            console.error('Error al marcar notificación:', error);
+        }
+    }
+
+    async marcarTodasComoLeidas() {
+        try {
+            // Actualizar estado local
+            this.state.notificaciones.forEach(n => n.leida = true);
+            
+            // Actualizar UI
+            this.$$('.notificacion-item.no-leida').forEach(item => {
+                item.classList.remove('no-leida');
+            });
+
+            this.actualizarContadorNotificaciones();
+
+            // Enviar a servidor
+            /* await fetch('/api/notificaciones/marcar-todas-leidas', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }); */
+
+        } catch (error) {
+            console.error('Error al marcar todas como leídas:', error);
+        }
+    }
+
+    actualizarContadorNotificaciones() {
+        const sinLeer = this.state.notificaciones.filter(n => !n.leida).length;
+        const badge = this.$('#badgeNotificaciones');
+
+        if (badge) {
+            if (sinLeer > 0) {
+                badge.textContent = sinLeer;
+                badge.style.display = 'flex';
+                badge.setAttribute('aria-label', `${sinLeer} notificaciones sin leer`);
+            } else {
+                badge.style.display = 'none';
+                badge.setAttribute('aria-label', 'Sin notificaciones');
+            }
+        }
+
+        this.state.notificacionesSinLeer = sinLeer;
+    }
+
+    /* ==================== TEMPLATES ==================== */
+
+    getLoadingTemplate() {
+        return `
+            <div class="loading-notificaciones">
+                <div class="spinner"></div>
+                <p>Cargando notificaciones...</p>
+            </div>
+        `;
+    }
+
+    getErrorTemplate() {
+        return `
+            <div class="error-notificaciones">
+                <i class="bi bi-exclamation-triangle"></i>
+                <p>Error al cargar notificaciones</p>
+                <button onclick="window.navbarManager.cargarNotificaciones()" class="btn-retry">
+                    Reintentar
+                </button>
+            </div>
+        `;
+    }
+
+    getEmptyNotificationsTemplate() {
+        return `
+            <div class="empty-notificaciones">
+                <i class="bi bi-bell-slash"></i>
+                <p>No tienes notificaciones</p>
+            </div>
+        `;
+    }
+
+    /* ==================== BÚSQUEDA ==================== */
+
+    initSearch() {
+        const searchInput = this.elements.search;
+        if (!searchInput) return;
+
+        searchInput.addEventListener('input', (e) => {
+            clearTimeout(this.state.searchDebounce);
+
+            const query = e.target.value.trim();
+
+            this.state.searchDebounce = setTimeout(() => {
+                this.performSearch(query);
+            }, this.config.searchDebounceTime);
+        });
+
+        // Limpiar búsqueda con ESC
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchInput.value = '';
+                this.performSearch('');
+                searchInput.blur();
+            }
+        });
+    }
+
+    async performSearch(query) {
+        if (!query) {
+            this.clearSearchResults();
+            return;
+        }
+
+        console.log('Buscando:', query);
+
+        // Aquí implementarías la búsqueda real
+        // Podría ser búsqueda local o llamada a API
+        
+        /* Ejemplo con API:
+        try {
+            const response = await fetch(`/api/buscar?q=${encodeURIComponent(query)}`);
+            const resultados = await response.json();
+            this.mostrarResultadosBusqueda(resultados);
+        } catch (error) {
+            console.error('Error en búsqueda:', error);
+        }
+        */
+    }
+
+    clearSearchResults() {
+        // Limpiar resultados de búsqueda
+        const items = this.$$('[data-searchable]');
+        items.forEach(el => el.style.display = '');
+    }
+
+    /* ==================== EFECTOS DE SCROLL ==================== */
+
+    initScrollEffects() {
+        let lastScroll = 0;
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            lastScroll = window.pageYOffset;
+
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    this.handleScroll(lastScroll);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    handleScroll(scrollPos) {
+        const navbar = this.elements.navbar;
+        if (!navbar) return;
+
+        if (scrollPos > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    }
+
+    /* ==================== NAVEGACIÓN POR TECLADO ==================== */
+
+    initKeyboardNavigation() {
+        document.addEventListener('keydown', (e) => {
+            // ESC para cerrar dropdowns
+            if (e.key === 'Escape') {
+                this.closeAllDropdowns();
+            }
+
+            // Tab trap en dropdowns abiertos
+            if (e.key === 'Tab' && this.state.activeDropdown) {
+                this.handleTabInDropdown(e);
+            }
+        });
+    }
+
+    handleTabInDropdown(e) {
+        const activeDropdown = this.elements.dropdowns[this.state.activeDropdown];
+        if (!activeDropdown) return;
+
+        const focusableElements = activeDropdown.querySelectorAll(
+            'a, button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+
+        if (focusableElements.length === 0) return;
+
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+        }
+    }
+
+    /* ==================== ACCESIBILIDAD ==================== */
+
+    initAccessibility() {
+        // Anunciar cambios dinámicos a lectores de pantalla
+        this.createAriaLiveRegion();
+    }
+
+    createAriaLiveRegion() {
+        if (this.$('#aria-live-region')) return;
+
+        const liveRegion = document.createElement('div');
+        liveRegion.id = 'aria-live-region';
+        liveRegion.className = 'sr-only';
+        liveRegion.setAttribute('aria-live', 'polite');
+        liveRegion.setAttribute('aria-atomic', 'true');
+        document.body.appendChild(liveRegion);
+    }
+
+    announceToScreenReader(message) {
+        const liveRegion = this.$('#aria-live-region');
+        if (liveRegion) {
+            liveRegion.textContent = message;
+            setTimeout(() => liveRegion.textContent = '', 1000);
+        }
+    }
+
+    /* ==================== UTILIDADES ==================== */
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+}
+
+/* ==================== CARRITO ==================== */
+
+class CarritoManager {
+    constructor() {
+        this.carrito = this.loadFromStorage() || [];
+        this.elements = {
+            sidebar: document.getElementById('carritoSidebar'),
+            items: document.getElementById('carritoItems'),
+            total: document.getElementById('totalCarrito'),
+            contador: document.getElementById('contadorCarrito'),
+            btnPagar: document.querySelector('.btn-pagar')
+        };
+
+        this.init();
+    }
+
+    init() {
+        this.initEventListeners();
+        this.actualizar();
+    }
+
+    initEventListeners() {
+        // Toggle carrito
+        document.querySelectorAll('[data-action="toggle-carrito"]').forEach(btn => {
+            btn.addEventListener('click', () => this.toggle());
+        });
+
+        // Cerrar con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.elements.sidebar?.classList.contains('open')) {
+                this.toggle();
+            }
+        });
+
+        // Proceder al pago
+        this.elements.btnPagar?.addEventListener('click', () => this.procesarPago());
+    }
+
+    toggle() {
+        this.elements.sidebar?.classList.toggle('open');
+        
+        if (this.elements.sidebar?.classList.contains('open')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    }
+
+    agregar(producto) {
+        const existe = this.carrito.find(item => item.id === producto.id);
+        
+        if (existe) {
+            existe.cantidad++;
+        } else {
+            this.carrito.push({
+                ...producto,
+                cantidad: 1
+            });
+        }
+
+        this.actualizar();
+        this.saveToStorage();
+        this.mostrarNotificacion(`${producto.nombre} agregado al carrito`);
+    }
+
+    eliminar(id) {
+        this.carrito = this.carrito.filter(item => item.id !== id);
+        this.actualizar();
+        this.saveToStorage();
+    }
+
+    cambiarCantidad(id, cantidad) {
+        const item = this.carrito.find(item => item.id === id);
+        if (item) {
+            item.cantidad = Math.max(1, cantidad);
+            this.actualizar();
+            this.saveToStorage();
+        }
+    }
+
+    actualizar() {
+        if (!this.elements.items) return;
+
+        if (this.carrito.length === 0) {
+            this.elements.items.innerHTML = `
+                <div class="carrito-vacio">
+                    <i class="bi bi-cart-x"></i>
+                    <p>Tu carrito está vacío</p>
+                </div>
+            `;
+            this.elements.btnPagar.disabled = true;
+        } else {
+            this.elements.items.innerHTML = this.carrito.map(item => `
+                <div class="carrito-item" data-item-id="${item.id}">
+                    <div class="item-info">
+                        <h4>${this.escapeHtml(item.nombre)}</h4>
+                        <span class="item-precio">$${item.precio}</span>
+                    </div>
+                    <div class="item-controles">
+                        <button class="btn-cantidad" onclick="window.carritoManager.cambiarCantidad(${item.id}, ${item.cantidad - 1})">
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <span class="cantidad">${item.cantidad}</span>
+                        <button class="btn-cantidad" onclick="window.carritoManager.cambiarCantidad(${item.id}, ${item.cantidad + 1})">
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <button class="btn-eliminar" onclick="window.carritoManager.eliminar(${item.id})" aria-label="Eliminar ${item.nombre}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            this.elements.btnPagar.disabled = false;
+        }
+
+        const total = this.carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+        this.elements.total.textContent = `$${total.toFixed(2)}`;
+
+        const totalItems = this.carrito.reduce((sum, item) => sum + item.cantidad, 0);
+        this.elements.contador.textContent = totalItems;
+        this.elements.contador.style.display = totalItems > 0 ? 'flex' : 'none';
+    }
+
+    procesarPago() {
+        if (this.carrito.length === 0) return;
+        
+        console.log('Procesando pago...', this.carrito);
+        // Aquí iría la lógica de pago
+        alert('Funcionalidad de pago en desarrollo');
+    }
+
+    saveToStorage() {
+        try {
+            localStorage.setItem('carrito', JSON.stringify(this.carrito));
+        } catch (error) {
+            console.error('Error al guardar carrito:', error);
+        }
+    }
+
+    loadFromStorage() {
+        try {
+            const data = localStorage.getItem('carrito');
+            return data ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error('Error al cargar carrito:', error);
+            return [];
+        }
+    }
+
+    mostrarNotificacion(mensaje) {
+        // Crear notificación toast
+        const toast = document.createElement('div');
+        toast.className = 'toast-notification';
+        toast.innerHTML = `
+            <i class="bi bi-check-circle-fill"></i>
+            <span>${this.escapeHtml(mensaje)}</span>
+        `;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+
+/* ==================== MODAL DE SOPORTE ==================== */
+
+class SoporteModal {
+    constructor() {
+        this.elements = {
+            modal: document.getElementById('modalSoporte'),
+            form: document.getElementById('formularioSoporte'),
+            btnEnviar: null
+        };
+
+        if (this.elements.modal && this.elements.form) {
+            this.elements.btnEnviar = this.elements.form.querySelector('.btn-enviar');
+            this.init();
+        }
+    }
+
+    init() {
+        this.initEventListeners();
+        this.initValidacion();
+    }
+
+    initEventListeners() {
+        // Abrir modal
+        document.querySelectorAll('[data-modal="soporte"]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.abrir();
+            });
+        });
+
+        // Cerrar modal
+        document.querySelectorAll('[data-modal-close="soporte"]').forEach(btn => {
+            btn.addEventListener('click', () => this.cerrar());
+        });
+
+        // Cerrar con click fuera
+        this.elements.modal?.addEventListener('click', (e) => {
+            if (e.target === this.elements.modal) {
+                this.cerrar();
+            }
+        });
+
+        // Cerrar con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.elements.modal?.style.display === 'flex') {
+                this.cerrar();
+            }
+        });
+
+        // Submit form
+        this.elements.form?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.enviarFormulario();
+        });
+    }
+
+    initValidacion() {
+        const campos = this.elements.form?.querySelectorAll('.form-control');
+        
+        campos?.forEach(campo => {
+            campo.addEventListener('blur', () => this.validarCampo(campo));
+            campo.addEventListener('input', () => {
+                if (campo.classList.contains('error')) {
+                    this.validarCampo(campo);
+                }
+            });
+        });
+    }
+
+    validarCampo(campo) {
+        const valor = campo.value.trim();
+        const errorSpan = campo.nextElementSibling;
+        let error = '';
+
+        if (campo.hasAttribute('required') && !valor) {
+            error = 'Este campo es obligatorio';
+        } else if (campo.type === 'email' && valor) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(valor)) {
+                error = 'Email inválido';
+            }
+        } else if (campo.tagName === 'TEXTAREA' && valor.length < 10) {
+            error = 'Mínimo 10 caracteres';
+        }
+
+        if (error) {
+            campo.classList.add('error');
+            if (errorSpan && errorSpan.classList.contains('error-message')) {
+                errorSpan.textContent = error;
+                errorSpan.style.display = 'block';
+            }
+            return false;
+        } else {
+            campo.classList.remove('error');
+            if (errorSpan && errorSpan.classList.contains('error-message')) {
+                errorSpan.style.display = 'none';
+            }
+            return true;
+        }
+    }
+
+    validarFormulario() {
+        const campos = this.elements.form.querySelectorAll('.form-control[required]');
+        let valido = true;
+
+        campos.forEach(campo => {
+            if (!this.validarCampo(campo)) {
+                valido = false;
+            }
+        });
+
+        return valido;
+    }
+
+    async enviarFormulario() {
+        if (!this.validarFormulario()) {
+            return;
+        }
+
+        const formData = new FormData(this.elements.form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Deshabilitar botón
+        this.elements.btnEnviar.disabled = true;
+        const spinner = this.elements.btnEnviar.querySelector('.loading-spinner');
+        const span = this.elements.btnEnviar.querySelector('span');
+        
+        if (spinner) spinner.style.display = 'inline-block';
+        if (span) span.textContent = 'Enviando...';
+
+        try {
+            // Simular envío
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            /* CÓDIGO REAL:
+            const response = await fetch('/api/soporte', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) throw new Error('Error al enviar');
+            */
+
+            this.mostrarExito();
+            setTimeout(() => this.cerrar(), 2000);
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al enviar el mensaje. Por favor, intenta de nuevo.');
+        } finally {
+            this.elements.btnEnviar.disabled = false;
+            if (spinner) spinner.style.display = 'none';
+            if (span) span.textContent = 'Enviar Mensaje';
+        }
+    }
+
+    mostrarExito() {
+        const mensajeExito = this.elements.modal?.querySelector('.mensaje-exito');
+        if (mensajeExito) {
+            mensajeExito.style.display = 'block';
+        }
+    }
+
+    abrir() {
+        this.elements.modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        setTimeout(() => {
+            const primerInput = this.elements.form.querySelector('input');
+            primerInput?.focus();
+        }, 100);
+    }
+
+    cerrar() {
+        this.elements.modal.style.display = 'none';
+        document.body.style.overflow = '';
+        this.elements.form?.reset();
+        
+        // Limpiar errores
+        this.elements.form?.querySelectorAll('.error').forEach(el => {
+            el.classList.remove('error');
+        });
+        this.elements.form?.querySelectorAll('.error-message').forEach(el => {
+            el.style.display = 'none';
+        });
+
+        const mensajeExito = this.elements.modal?.querySelector('.mensaje-exito');
+        if (mensajeExito) {
+            mensajeExito.style.display = 'none';
         }
     }
 }
 
-/**
- * ============================================
- * INICIALIZACIÓN
- * ============================================
- */
+/* ==================== INICIALIZACIÓN GLOBAL ==================== */
 
-// Esperar a que el DOM esté listo
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHeader);
-} else {
-    initHeader();
-}
+document.addEventListener('DOMContentLoaded', () => {
+    window.navbarManager = new NavbarManager();
+    window.carritoManager = new CarritoManager();
+    window.soporteModal = new SoporteModal();
 
-/**
- * Función de inicialización
- */
-function initHeader() {
-    // Crear instancia global del header
-    window.headerController = new HeaderController();
-    
-    // Actualizar saludo según la hora
-    window.headerController.updateGreeting();
-}
-
-/**
- * ============================================
- * ANIMACIONES CSS (agregar al CSS)
- * ============================================
- */
-
-// Agregar estas animaciones a tu CSS:
-/*
-@keyframes slideInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes fadeOut {
-    from {
-        opacity: 1;
-        transform: scale(1);
-    }
-    to {
-        opacity: 0;
-        transform: scale(0.8);
-    }
-}
-*/
-
-/**
- * ============================================
- * UTILIDADES PÚBLICAS
- * ============================================
- */
-
-/**
- * Función helper para actualizar notificaciones
- */
-function updateNotificationCount(count) {
-    const badge = document.querySelector('.notification-count');
-    if (badge) {
-        badge.textContent = count;
-        if (count === 0) {
-            badge.style.display = 'none';
-        }
-    }
-}
-
-/**
- * Función helper para mostrar notificación
- */
-function showNotification(message, type = 'info') {
-    console.log(`🔔 ${type.toUpperCase()}: ${message}`);
-    // Aquí puedes implementar un sistema de notificaciones toast
-}
-
-// Exportar para uso en módulos
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { 
-        HeaderController, 
-        updateNotificationCount, 
-        showNotification 
-    };
-}
+    console.log('🚀 Sistema de navegación cargado completamente');
+});

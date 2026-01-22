@@ -67,7 +67,6 @@ body {
     padding: 2rem;
     transition: padding-left var(--transition-speed) ease, margin-top var(--transition-speed) ease;
     background: var(--bg-primary);
-    margin-top: var(--header-height, 70px);
 }
 
 /* Ajuste cuando el body tiene padding-left del sidebar */
